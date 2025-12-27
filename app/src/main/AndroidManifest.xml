@@ -10,6 +10,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mally">
         <activity
+            android:name=".MyMusique"
+            android:exported="false" />
+        <activity
+            android:name=".MyGame"
+            android:exported="false" />
+        <activity
+            android:name=".MyInformation"
+            android:exported="false" />
+        <activity
+            android:name=".myFormation"
+            android:exported="false" />
+        <activity
+            android:name=".Musique"
+            android:exported="false" />
+        <activity
+            android:name=".jeu"
+            android:exported="false" />
+        <activity
+            android:name=".information"
+            android:exported="false" />
+        <activity
+            android:name=".formation"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
