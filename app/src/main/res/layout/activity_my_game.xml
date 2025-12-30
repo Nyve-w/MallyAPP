@@ -4,15 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyGame"
-    android:gravity="center">
+    android:orientation="vertical"
+    tools:context=".MyGame">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="ENCOURS DE DEVELLOPPEMENT REVENER PLUS TARD ..."
-        android:textSize="34dp" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_margin="50dp"
+        android:layout_height="250dp"
+        app:cardCornerRadius="18dp"
+        app:cardBackgroundColor="#D5D6C847"
+        app:cardElevation="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+
+
+            android:orientation="vertical">
+
+            <ImageView
+
+                android:layout_width="310dp"
+                android:layout_height="200dp"
+                android:onClick="ouvrirJeu1"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/sudoku"
+                tools:srcCompat="@drawable/sudoku" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="SUDOKU"
+                android:textSize="18sp"
+                app:fontFamily="@font/amiri" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_margin="50dp"
+        android:layout_height="250dp"
+        app:cardCornerRadius="18dp"
+        app:cardBackgroundColor="#F5D5D5D5"
+        app:cardElevation="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+
+
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="310dp"
+                android:layout_height="200dp"
+                android:onClick="ouvrirJeu2"
+                android:scaleType="centerCrop"
+                android:src="@drawable/carte" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="SOLITAIRE"
+                android:textSize="18sp"
+                app:fontFamily="@font/amiri" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 </android.widget.LinearLayout>
