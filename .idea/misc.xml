@@ -25,9 +25,11 @@
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/menu/main_menu.xml" value="0.14666666666666667" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/menu/menu_princ.xml" value="0.14749893116716545" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.188" />
+        <entry key="..\:/Users/grace/Desktop/GitUb projet/MallyAPP/app/src/main/res/layout/activity_main.xml" value="0.22" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
