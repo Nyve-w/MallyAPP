@@ -5,26 +5,20 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label=" "
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mally">
         <activity
+            android:name=".UserGameParties"
+            android:exported="false" />
+        <activity
+            android:name=".Help_Games"
+            android:exported="false" />
+        <activity
             android:name=".jeu_solitaire"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".MyMusique"
-            android:exported="false" />
-        <activity
-            android:name=".MyGame"
-            android:exported="false" />
-        <activity
-            android:name=".MyInformation"
-            android:exported="false" />
-        <activity
-            android:name=".myFormation"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MyMusique"
             android:exported="false" />

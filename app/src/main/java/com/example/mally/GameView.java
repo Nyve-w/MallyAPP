@@ -17,9 +17,17 @@ import java.util.ArrayList;
 
 public class GameView extends View implements GestureDetector.OnGestureListener
 {
+    private long startTime;
+    private long elapsedTime;
+    private android.os.Handler timerHandler = new android.os.Handler();
+    private GameDatabaseHelper dbHelper;
+    private int bestScore;
+    private long bestTime;
 
 
-private int headerBackgroundColor;
+
+
+    private int headerBackgroundColor;
     private int headerForegroundColor;
     private int backgroundColor;
     private int redColor;
@@ -53,14 +61,31 @@ private int headerBackgroundColor;
         super(context, attrs);
         postConstruct();
     }
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            elapsedTime = System.currentTimeMillis() - startTime;
+            postInvalidate();
+            timerHandler.postDelayed(this, 1000);
+        }
+    };
+
 
     private void postConstruct() {
         gestureDetector = new GestureDetector(getContext(), this);
         Resources res = getResources();
-        headerBackgroundColor = res.getColor( R.color.colorPrimaryDark );
         headerForegroundColor = res.getColor( R.color.headerForegroundColor );
         backgroundColor = res.getColor( R.color.backgroundColor );
         redColor = res.getColor( R.color.redColor );
+        startTime = System.currentTimeMillis();
+        timerHandler.post(timerRunnable);
+        dbHelper = new GameDatabaseHelper(getContext());
+
+        // 🔥 ICI tu récupères les données
+        bestScore = dbHelper.getBestScore();
+        bestTime = dbHelper.getBestTime();
+
+
     }
 
 
@@ -229,12 +254,19 @@ private int headerBackgroundColor;
             canvas.drawBitmap(imgBack, x, y, paint);
         }
     }
+    private String getFormattedTime() {
+        int seconds = (int) (elapsedTime / 1000);
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
 
 
     /**
      * On trace l'aire de jeu
      * @param canvas Le canvas à utiliser.
      */
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -263,10 +295,40 @@ private int headerBackgroundColor;
         paint.setTextAlign( Paint.Align.LEFT );
         paint.setTextSize( getWidth() / 20f );
         paint.setStrokeWidth(1);
-        canvas.drawText( "V 1.0", (int) (widthDiv10 * 0.5), (int) (heightDiv10 * 1.3), paint );
+
+        canvas.drawText(
+                "Score : " + game.score,
+                getWidth() * 0.05f,
+                getHeight() * 0.12f,
+                paint
+        );
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(getWidth() / 25f);
+        paint.setColor(headerForegroundColor);
+
+        canvas.drawText(
+                "Best Score: " + bestScore,
+                getWidth() * 0.05f,
+                getHeight() * 0.09f,
+                paint
+        );
+
+
 
         paint.setTextAlign( Paint.Align.RIGHT );
-        canvas.drawText( "By KooR.fr", (int) (widthDiv10 * 9.5), (int) (heightDiv10 * 1.3), paint );
+        canvas.drawText( "By Mally.fr", (int) (widthDiv10 * 0.03), (int) (heightDiv10 * 1.3), paint );
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextSize(getWidth() / 25f);
+        paint.setColor(headerForegroundColor);
+
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText(
+                "Time : " + getFormattedTime(),
+                getWidth() * 0.95f,
+                getHeight() * 0.12f,
+                paint
+        );
 
 
         // --- Draw the fourth stacks ---
@@ -328,6 +390,7 @@ private int headerBackgroundColor;
                 game.returnedPioche.clear();
                 for( Card card : game.pioche ) card.setReturned( false );
             }
+            checkEndGame();
             postInvalidate();
             return true;
         }
@@ -348,7 +411,9 @@ private int headerBackgroundColor;
                 Card selectedCard = game.returnedPioche.remove( game.returnedPioche.size() - 1 );
                 game.decks[deckIndex].add( selectedCard );
                 postInvalidate();
-                return true;
+                game.addScore(10);
+                checkEndGame();
+                postInvalidate();
             }
         }
 
@@ -370,6 +435,9 @@ private int headerBackgroundColor;
                                 Card selectedCard = deck.remove(deck.size() - 1);
                                 if ( ! deck.isEmpty() ) deck.lastElement().setReturned(true);
                                 game.stacks[stackIndex].add( selectedCard );
+                                game.addScore(10);
+
+                                checkEndGame();
                                 postInvalidate();
                                 return true;
                             }
@@ -408,6 +476,31 @@ private int headerBackgroundColor;
 
         return true;
     }
+    private boolean gameFinished = false;
+
+    private void checkEndGame() {
+        if (gameFinished) return;
+
+        if (game.isGameFinished()) {
+            gameFinished = true;
+
+            timerHandler.removeCallbacks(timerRunnable);
+
+            // ✅ UNE SEULE SAUVEGARDE
+            dbHelper.saveScore(game.score, elapsedTime);
+
+            // 🔄 Recharge après sauvegarde
+
+            bestScore = dbHelper.getBestScore();
+            bestTime = dbHelper.getBestTime();
+
+            Log.d("GAME", "🎉 Partie terminée !");
+            Log.d("GAME", "Score : " + game.score);
+            Log.d("GAME", "Temps : " + getFormattedTime());
+
+            // plus tard : dialog victoire
+        }
+    }
 
     @Override
     public boolean onDown(MotionEvent e) {
@@ -432,6 +525,13 @@ private int headerBackgroundColor;
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
+    }
+    public Game getGame() {
+        return game;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
     }
 
 }

@@ -3,24 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".MyGame">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_margin="50dp"
+        android:layout_width="280dp"
+        android:id="@+id/mebar"
         android:layout_height="250dp"
-        app:cardCornerRadius="18dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="50dp"
         app:cardBackgroundColor="#D5D6C847"
+        app:cardCornerRadius="18dp"
         app:cardElevation="20dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="309dp"
             android:layout_height="250dp"
 
 
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="67dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_baseline_lock_24" />
 
             <ImageView
 
@@ -45,18 +54,19 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_margin="50dp"
+        android:layout_width="280dp"
         android:layout_height="250dp"
-        app:cardCornerRadius="18dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="18dp"
         app:cardBackgroundColor="#F5D5D5D5"
+        app:cardCornerRadius="18dp"
         app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
-
-
             android:orientation="vertical">
 
             <ImageView
@@ -73,11 +83,36 @@
                 android:padding="10dp"
                 android:text="SOLITAIRE"
                 android:textSize="18sp"
+
                 app:fontFamily="@font/amiri" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+    <!-- ESPACE QUI POUSSE LA NAV EN BAS -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <FrameLayout
+        android:id="@+id/container_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_weight="1"
+        android:layout_below="@+id/mebar"></FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#B4D2F1"
+        app:itemIconSize="30dp"
+        app:labelVisibilityMode="auto"
+        app:menu="@menu/bottom_view">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
 </android.widget.LinearLayout>

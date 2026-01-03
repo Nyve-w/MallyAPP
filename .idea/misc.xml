@@ -3,14 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_games_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_local_mall_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_baseline_widgets_24.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/drawable/ic_launcher_background.xml" value="0.188" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_help_games.xml" value="0.14749893116716545" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_jeu_solitaire.xml" value="0.1" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_my_formation.xml" value="0.1" />
-        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_my_game.xml" value="0.1796875" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_my_game.xml" value="0.14666666666666667" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_my_information.xml" value="0.1796875" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/activity_my_musique.xml" value="0.1796875" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/fragment_home.xml" value="0.14749893116716545" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/layout/header.xml" value="0.1" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/menu/bottom_view.xml" value="0.14749893116716545" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/menu/main_menu.xml" value="0.14666666666666667" />
+        <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/menu/menu_princ.xml" value="0.14749893116716545" />
         <entry key="..\:/BAC2_USCITECH/COURS_BAC2/01_PROGRAMMATION_MOBIL/Mally/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.188" />
       </map>
     </option>

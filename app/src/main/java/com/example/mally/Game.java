@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Game implements Serializable {
+    public int score = 0;
 
     public static final int STACK_COUNT = 4;
     public static final int DECK_COUNT = 7;
@@ -24,7 +25,7 @@ public class Game implements Serializable {
 
     // 🔥 INITIALISATION DU JEU (OBLIGATOIRE)
     public void initNewGame() {
-
+        score = 0;
         for (Stack s : stacks) s.clear();
         for (Deck d : decks) d.clear();
         pioche.clear();
@@ -85,4 +86,20 @@ public class Game implements Serializable {
         }
         return -1;
     }
+
+    //POUR LE SCORE DANS LE JEU
+    public void addScore(int value) {
+        score += value;
+    }
+    public boolean isGameFinished() {
+        for (int i = 0; i < STACK_COUNT; i++) {
+            if (stacks[i].size() != 13) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 }
+
