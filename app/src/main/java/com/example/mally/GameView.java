@@ -281,15 +281,15 @@ public class GameView extends View implements GestureDetector.OnGestureListener
         float widthDiv10 = getWidth() / 10f;
         float heightDiv10 = getHeight() / 10f;
 
-        paint.setColor( headerBackgroundColor );
+        paint.setColor(headerBackgroundColor);
         RectF rectF = new RectF(0, 0, getWidth(), getHeight() * 0.15f);
         canvas.drawRect(rectF, paint);
 
         paint.setColor(redColor);
         paint.setTextAlign( Paint.Align.CENTER );
         paint.setTextSize( (int) (getWidth() / 8.5) );
-        canvas.drawText( getResources().getString(R.string.app_name),
-                widthDiv10 * 5, (int) (heightDiv10 * 0.8), paint );
+        canvas.drawText( getResources().getString(R.string.game_name),
+                widthDiv10 * 5, (int) (heightDiv10 * 0.5), paint );
 
         paint.setColor( headerForegroundColor );
         paint.setTextAlign( Paint.Align.LEFT );
@@ -452,6 +452,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener
                                 if ( ! deck.isEmpty() ) {
                                     deck.lastElement().setReturned(true);
                                 }
+                                game.addScore(2 );
                                 game.decks[deckIndex2].add( selectedCard );
                             } else {
                                 // On déplace plusieurs cartes
@@ -462,6 +463,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener
                                 if ( ! deck.isEmpty() ) {
                                     deck.lastElement().setReturned(true);
                                 }
+                                game.addScore(5);
                                 game.decks[deckIndex2].addAll( selectedCards );
                             }
                             postInvalidate();
@@ -529,6 +531,10 @@ public class GameView extends View implements GestureDetector.OnGestureListener
     public Game getGame() {
         return game;
     }
+    public int getBestScore() {
+        return bestScore;
+    }
+
 
     public long getElapsedTime() {
         return elapsedTime;
