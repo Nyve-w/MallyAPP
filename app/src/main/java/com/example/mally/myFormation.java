@@ -2,31 +2,48 @@ package com.example.mally;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.File;
 
 public class myFormation extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
+    MaterialToolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_formation);
+        matchID();
 
-        // 1️⃣ initialisation après setContentView
-        drawerLayout = findViewById(R.id.drawer);
-        navigationView = findViewById(R.id.nav_view);
+       /* buttonop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pdf();
+            }
+        });*/
 
         // 2️⃣ Toolbar
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         // 3️⃣ Drawer toggle (hamburger)
@@ -70,4 +87,36 @@ public class myFormation extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    public void pdf(){
+        File file = new File(getFilesDir(), "cours1.pdf");
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(
+                FileProvider.getUriForFile(
+                        this,
+                        getPackageName() + ".provider",
+                        file
+                ),
+                "application/pdf"
+        );
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
+
+
+    }
+    public void matchID() {
+        toolbar = findViewById(R.id.toolbar);
+        // 1️⃣ initialisation après setContentView
+        drawerLayout = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.nav_view);
+    }
+   public void moveToActivity(View v){
+        Intent open = new Intent(myFormation.this,nosformations.class);
+        startActivity(open);
+   }
+    /*public void moveTooFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_view,fragment).commit();
+    }*/
+
 }

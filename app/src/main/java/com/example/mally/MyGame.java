@@ -65,5 +65,9 @@ public class MyGame extends AppCompatActivity {
         messageAlert.setIcon(android.R.drawable.ic_dialog_info);
         messageAlert.show();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed(); // retour normal
+    }
 
 }
