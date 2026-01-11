@@ -35,9 +35,9 @@ public class MyGame extends AppCompatActivity {
                     intent = new Intent(this, UserGameParties.class);
                     break;
 
-                case R.id.nav_game:
+                /*case R.id.nav_game:
                     intent = new Intent(this, MyGame.class);
-                    break;
+                    break;*/
             }
 
             if (intent != null) {
@@ -64,6 +64,10 @@ public class MyGame extends AppCompatActivity {
         messageAlert.setMessage("Ce jeu n'est pas disponible dans votre region");
         messageAlert.setIcon(android.R.drawable.ic_dialog_info);
         messageAlert.show();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed(); // retour normal
     }
 
 }

@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mally">
         <activity
+            android:name=".hangmanGame"
+            android:exported="false" />
+        <activity
+            android:name=".nosformations"
+            android:exported="false" />
+        <activity
             android:name=".UserGameParties"
             android:exported="false" />
         <activity

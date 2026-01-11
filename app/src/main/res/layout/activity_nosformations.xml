@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".nosformations">
+  <TextView
+      android:id="@+id/textView10"
+      android:layout_marginTop="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="28dp"
+      android:layout_marginStart="50dp"
+      android:textSize="26sp"
+      android:text="INTRODUCTION" />
+  <FrameLayout
+      android:id="@+id/videoContainer"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:layout_margin="20sp">
+
+
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+  </FrameLayout>
+  <TextView
+      android:id="@+id/textView0"
+      android:layout_width="match_parent"
+      android:layout_height="28dp"
+      android:layout_marginTop="15dp"
+      android:layout_marginStart="50dp"
+      android:textSize="26sp"
+      android:text="DEVELLOPEMENT" />
+  <FrameLayout
+      android:id="@+id/videoContainer2"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:layout_margin="20sp">
+
+    <VideoView
+        android:id="@+id/videoView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+  </FrameLayout>
+
+  <Button
+      android:id="@+id/button"
+      android:layout_marginTop="50dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:onClick="Toast"
+      android:text="PDF" />
+
+
+</android.widget.LinearLayout>
