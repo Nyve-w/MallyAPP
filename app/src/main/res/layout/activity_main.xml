@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#C6AB8F"
+    android:background="@drawable/fond1"
     tools:context=".MainActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -18,29 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/main_menu"
-            app:navigationIcon="@drawable/ic_baseline_menu_24">
+            app:navigationIcon="@drawable/ic_baseline_menu_24"
             app:title="Mally">
-
         </com.google.android.material.appbar.MaterialToolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="355dp"
         android:layout_height="200dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
-
+        android:layout_margin="20dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-
-            android:background="@android:color/transparent"
-            app:cardBackgroundColor="#72F1EAEA"
+            app:cardBackgroundColor="#03A9F4"
             app:cardCornerRadius="10dp"
             app:cardElevation="20dp">
 
@@ -53,12 +49,13 @@
                 <TextView
                     android:id="@+id/textView"
                     style="@style/Widget.AppCompat.TextView"
-                    android:paddingTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:text="Formation"
-                    android:textSize="20sp" />
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="Formation"/>
 
                 <ImageView
                     android:id="@+id/formation"
@@ -75,10 +72,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="13dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            app:cardBackgroundColor="#72F1EAEA"
+            app:cardBackgroundColor="#03A9F4"
             app:cardCornerRadius="10dp"
             app:cardElevation="20dp">
 
@@ -90,8 +86,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.TextView"
-                    android:paddingTop="8dp"
-                    android:paddingStart="15dp"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
                     android:text="Information"
                     android:textSize="20sp"/>
 
@@ -99,7 +96,7 @@
                 <ImageView
                     android:id="@+id/information"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:scaleType="centerCrop"
                     android:onClick="methForOpenFiles2"
@@ -111,9 +108,9 @@
 
 
     <LinearLayout
-        android:layout_width="305dp"
+        android:layout_width="355dp"
         android:layout_height="200dp"
-        android:layout_marginLeft="30dp"
+        android:layout_margin="20dp"
         android:layout_marginTop="30dp"
         android:orientation="horizontal">
 
@@ -121,8 +118,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            app:cardBackgroundColor="#72F1EAEA"
+            android:layout_margin="5dp"
+            app:cardBackgroundColor="#03A9F4"
             app:cardCornerRadius="10dp"
             app:cardElevation="20dp">
 
@@ -136,8 +133,9 @@
                     style="@style/Widget.AppCompat.TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingTop="8dp"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
                     android:text="Game"
                     android:textSize="20sp" />
 
@@ -156,10 +154,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="13dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            app:cardBackgroundColor="#9AFDF8F8"
+            app:cardBackgroundColor="#03A9F4"
             app:cardCornerRadius="10dp"
             app:cardElevation="20dp">
 
@@ -173,8 +170,9 @@
                     style="@style/Widget.AppCompat.TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingTop="8dp"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
                     android:text="Musique"
                     android:textSize="20sp" />
 
@@ -192,4 +190,4 @@
     </LinearLayout>
 
 
-</android.widget.LinearLayout>gi
+</android.widget.LinearLayout>

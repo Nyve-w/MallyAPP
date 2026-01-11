@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="15dp"
-    android:paddingTop="20dp"
+    android:background="@drawable/fond1"
     tools:context=".MyGame">
 
     <TextView
@@ -15,7 +14,11 @@
         android:layout_height="52dp"
         android:text="BIENVENU SUR MALLY GAME"
         android:textSize="24sp"
-        app:fontFamily="@font/amiri" />
+        android:textColor="#fff"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="#03A9F4"
+        />
 
 
         <LinearLayout
@@ -26,32 +29,29 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/mebar"
-                android:layout_width="280dp"
+                android:layout_width="305dp"
                 android:layout_height="250dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="50dp"
-                app:cardBackgroundColor="#D5D6C847"
+                app:cardBackgroundColor="#03A9F4"
                 app:cardCornerRadius="18dp"
                 app:cardElevation="20dp">
 
                 <LinearLayout
-                    android:layout_width="309dp"
-                    android:layout_height="250dp"
-
-
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="67dp"
-                        android:layout_height="50dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
                         app:srcCompat="@drawable/ic_baseline_lock_24" />
 
                     <ImageView
-
-                        android:layout_width="310dp"
-                        android:layout_height="200dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
                         android:onClick="ouvrirJeu1"
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/sudoku"
@@ -61,22 +61,23 @@
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
                         android:text="SUDOKU"
                         android:textSize="18sp"
-                        app:fontFamily="@font/amiri" />
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                         />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="280dp"
+                android:layout_width="305dp"
                 android:layout_height="250dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
-
-                app:cardBackgroundColor="#F5D5D5D5"
+                app:cardBackgroundColor="#03A9F4"
                 app:cardCornerRadius="18dp"
                 app:cardElevation="20dp">
 
@@ -86,7 +87,7 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="310dp"
+                        android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:onClick="ouvrirJeu2"
                         android:scaleType="centerCrop"
@@ -96,11 +97,12 @@
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:textStyle="bold"
                         android:text="SOLITAIRE"
                         android:textSize="18sp"
-
-                        app:fontFamily="@font/amiri" />
+                        />
 
                 </LinearLayout>
 
@@ -128,7 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="#9EDF7321"
+        android:background="#03A9F4"
         app:itemIconSize="30dp"
         app:labelVisibilityMode="auto"
         app:menu="@menu/bottom_view">
