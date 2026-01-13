@@ -35,7 +35,7 @@
             android:name=".MyInformation"
             android:exported="false" />
         <activity
-            android:name=".myFormation"
+            android:name=".MyFormation"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

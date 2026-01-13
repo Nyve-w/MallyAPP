@@ -5,24 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 
-public class myFormation extends AppCompatActivity {
+public class MyFormation extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -112,7 +106,7 @@ public class myFormation extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
     }
    public void moveToActivity(View v){
-        Intent open = new Intent(myFormation.this,nosformations.class);
+        Intent open = new Intent(MyFormation.this,nosformations.class);
         startActivity(open);
    }
     /*public void moveTooFragment(Fragment fragment) {

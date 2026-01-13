@@ -35,9 +35,9 @@ public class MyGame extends AppCompatActivity {
                     intent = new Intent(this, UserGameParties.class);
                     break;
 
-                /*case R.id.nav_game:
+                case R.id.nav_game:
                     intent = new Intent(this, MyGame.class);
-                    break;*/
+                    break;
             }
 
             if (intent != null) {

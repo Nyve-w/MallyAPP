@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/bg_color"
     tools:context=".MainActivity">
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:id="@+id/appBar"
@@ -20,11 +21,10 @@
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/main_menu"
             app:navigationIcon="@drawable/ic_baseline_menu_24"
-            app:title="Mally">
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:title="Mally" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
+    <!-- Card Formation -->
     <LinearLayout
         android:layout_width="355dp"
         android:layout_height="180dp"
@@ -38,7 +38,6 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="20dp">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,21 +61,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:onClick="methForOpenFiles"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/watch" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
 
-
+    <!-- Card Game et Musique -->
     <LinearLayout
         android:layout_width="355dp"
         android:layout_height="170dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="0dp"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
@@ -94,7 +90,6 @@
                 android:orientation="vertical">
 
                 <TextView
-
                     style="@style/Widget.AppCompat.TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -110,7 +105,6 @@
                     android:layout_height="150dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:onClick="methForOpenFiles3"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/game" />
             </LinearLayout>
@@ -131,7 +125,6 @@
                 android:orientation="vertical">
 
                 <TextView
-
                     style="@style/Widget.AppCompat.TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -147,13 +140,13 @@
                     android:layout_height="150dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:onClick="methForOpenFiles4"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/music" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
+    <!-- Card Information -->
     <LinearLayout
         android:layout_width="355dp"
         android:layout_height="195dp"
@@ -167,7 +160,6 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="20dp">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -191,14 +183,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:layout_marginTop="10dp"
-                    android:onClick="methForOpenFiles2"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/look" />
-
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
-
 
 </android.widget.LinearLayout>
