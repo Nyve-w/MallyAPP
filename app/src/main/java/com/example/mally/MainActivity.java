@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout splashOverlay;
     LottieAnimationView lottieView;
 
-    private static final String PREFS = "app_prefs";
-    private static final String SPLASH_KEY = "splash_shown";
+    private boolean isSplashPlaying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,40 +34,38 @@ public class MainActivity extends AppCompatActivity {
 
         method_for_match_id();
 
-        if (hasSplashBeenShown()) {
-            splashOverlay.setVisibility(View.GONE);
-            rootContainer.setAlpha(1f);
-        } else {
-            playSplash();
-        }
-
+        // Toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v ->
                 Toast.makeText(this, "Fini de coder ça Monsieur", Toast.LENGTH_SHORT).show()
         );
 
+        // Clics
         setupClick(formation, MyFormation.class);
         setupClick(information, MyInformation.class);
         setupClick(jeu, MyGame.class);
         setupClick(musique, MyMusique.class);
     }
 
-    private void method_for_match_id() {
-        formation = findViewById(R.id.formation);
-        information = findViewById(R.id.information);
-        jeu = findViewById(R.id.jeu);
-        musique = findViewById(R.id.musique);
-
-        rootContainer = findViewById(R.id.rootContainer);
-        splashOverlay = findViewById(R.id.splashOverlay);
-        lottieView = findViewById(R.id.lottieView);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playSplash();
     }
 
+    // ================= SPLASH =================
     private void playSplash() {
+        if (isSplashPlaying) return;
+        isSplashPlaying = true;
+
+        splashOverlay.setAlpha(1f);
+        splashOverlay.setVisibility(View.VISIBLE);
         rootContainer.setAlpha(0f);
-        saveSplashState();
 
         long startTime = System.currentTimeMillis();
+
+        lottieView.cancelAnimation();
+        lottieView.playAnimation();
 
         lottieView.addAnimatorListener(new AnimatorListenerAdapter() {
             @Override
@@ -89,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                                         .alpha(1f)
                                         .setDuration(600)
                                         .start();
+                                isSplashPlaying = false;
                             })
                             .start();
 
@@ -97,18 +94,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean hasSplashBeenShown() {
-        return getSharedPreferences(PREFS, MODE_PRIVATE)
-                .getBoolean(SPLASH_KEY, false);
+    // ================= IDS =================
+    private void method_for_match_id() {
+        formation = findViewById(R.id.formation);
+        information = findViewById(R.id.information);
+        jeu = findViewById(R.id.jeu);
+        musique = findViewById(R.id.musique);
+
+        rootContainer = findViewById(R.id.rootContainer);
+        splashOverlay = findViewById(R.id.splashOverlay);
+        lottieView = findViewById(R.id.lottieView);
     }
 
-    private void saveSplashState() {
-        getSharedPreferences(PREFS, MODE_PRIVATE)
-                .edit()
-                .putBoolean(SPLASH_KEY, true)
-                .apply();
-    }
-
+    // ================= CLICS =================
     private void setupClick(ImageView img, Class<?> target) {
         if (img == null) return;
         img.setOnClickListener(v -> {
@@ -122,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // ================= BACK =================
     @Override
     public void onBackPressed() {
         if (splashOverlay.getVisibility() == View.VISIBLE) return;
