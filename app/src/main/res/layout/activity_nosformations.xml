@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg_color"
     tools:context=".nosformations">
   <TextView
       android:id="@+id/textView10"
       android:layout_marginTop="15dp"
       android:layout_width="match_parent"
-      android:layout_height="28dp"
-      android:layout_marginStart="50dp"
+      android:layout_height="30dp"
       android:textSize="26sp"
+      android:textColor="#fff"
+      android:gravity="center"
+      android:textStyle="bold"
       android:text="INTRODUCTION" />
   <FrameLayout
       android:id="@+id/videoContainer"
@@ -32,7 +35,9 @@
       android:layout_width="match_parent"
       android:layout_height="28dp"
       android:layout_marginTop="15dp"
-      android:layout_marginStart="50dp"
+      android:textColor="#fff"
+      android:gravity="center"
+      android:textStyle="bold"
       android:textSize="26sp"
       android:text="DEVELLOPEMENT" />
   <FrameLayout
@@ -47,13 +52,17 @@
         android:layout_height="match_parent" />
   </FrameLayout>
 
-  <Button
-      android:id="@+id/button"
-      android:layout_marginTop="50dp"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:onClick="Toast"
-      android:text="PDF" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:layout_marginTop="50dp"
+        android:background="#03A9F4"
+        android:gravity="center"
+        android:onClick="Toast"
+        android:text="PDF"
+        app:cornerRadius="20dp" />
 
 
 </android.widget.LinearLayout>

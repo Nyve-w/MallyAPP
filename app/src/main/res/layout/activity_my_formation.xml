@@ -6,15 +6,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer"
-
-
     tools:context=".myFormation">
 
     <!-- Contenu principal -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_color">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -22,6 +21,7 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
+                android:background="@drawable/btn_color"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 app:title=" Formation"
@@ -48,6 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/stroke"
+                    app:cardBackgroundColor="#8E7CF3"
                     android:layout_margin="15dp"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="20dp">
@@ -55,8 +56,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="280dp"
-
-
+                        android:background="#03A9F4"
+                        android:layout_margin="15dp"
                         android:onClick="moveToActivity"
                         android:orientation="vertical">
 
@@ -64,15 +65,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
                             android:scaleType="centerCrop"
-
-                            app:srcCompat="@drawable/programation" />
+                            app:srcCompat="@drawable/code" />
 
                         <TextView
                             android:id="@+id/textView9"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="20sp"
-
+                            android:textColor="#fff"
+                            android:gravity="center"
+                            android:textStyle="bold"
                             android:text="INTRODUCTION A LA PROGRAMMATION"
                             android:textSize="15dp" />
 
@@ -85,6 +87,7 @@
                     android:layout_margin="15dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/stroke"
+                    app:cardBackgroundColor="#8E7CF3"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="20dp">
 
@@ -92,20 +95,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="280dp"
                         android:layout_margin="15dp"
-
+                        android:background="#03A9F4"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
                             android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/feuille" />
+                            app:srcCompat="@drawable/code_p" />
 
                         <TextView
                             android:id="@+id/textView934"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="20sp"
+                            android:textColor="#fff"
+                            android:gravity="center"
+                            android:textStyle="bold"
                             android:text="INTRODUCTION A LA POO AVEC PYTHON"
                             android:textSize="15dp" />
 
@@ -117,6 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/stroke"
+                    app:cardBackgroundColor="#8E7CF3"
                     android:layout_margin="15dp"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="20dp">
@@ -125,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="280dp"
                         android:layout_margin="15dp"
-
+                        android:background="#03A9F4"
                         android:onClick="moveToActivity"
                         android:orientation="vertical">
 
@@ -133,13 +140,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
                             android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/maintenance" />
+                            app:srcCompat="@drawable/repair" />
 
                         <TextView
                             android:id="@+id/textView93"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="20sp"
+                            android:textColor="#fff"
+                            android:gravity="center"
+                            android:textStyle="bold"
                             android:text="INTRODUCTION A LA  MAINTENANCE"
                             android:textSize="15dp" />
 

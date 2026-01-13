@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="ENCOURS DE DEVELLOPPEMENT REVENER PLUS TARD ...JB AND BARACK"
+        android:text="TU CHERCHE QUOI ICI ? OZA MULUBA?"
         android:textSize="34dp" />
 
 </android.widget.LinearLayout>
