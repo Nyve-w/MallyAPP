@@ -1,20 +1,17 @@
 package com.example.mally;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.mlkit.nl.translate.TranslateLanguage;
-import com.google.mlkit.nl.translate.Translator;
-import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,40 +36,35 @@ public class MyInformation extends AppCompatActivity {
 
     boolean isLoading = false;
 
-    // ML Kit Translator
-    Translator translator;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_information);
 
+        // Toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar_info);
         toolbar.setNavigationOnClickListener(view ->
                 Toast.makeText(this, "Menu cliqué", Toast.LENGTH_SHORT).show()
         );
 
+        // RecyclerView + Adapter
         recyclerView = findViewById(R.id.infoRecyclerView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new InfoAdapter(this, list);
         recyclerView.setAdapter(adapter);
 
+        // SwipeRefresh + Lottie Loader
         lottieLoading = findViewById(R.id.lottieLoading);
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
-        // Initialiser ML Kit translator vers français
-        TranslatorOptions options =
-                new TranslatorOptions.Builder()
-                        .setSourceLanguage(TranslateLanguage.ENGLISH)
-                        .setTargetLanguage(TranslateLanguage.FRENCH)
-                        .build();
-        translator = com.google.mlkit.nl.translate.Translation.getClient(options);
-
+        // Premier fetch
         fetchFeed();
 
+        // Pull-to-refresh
         swipeRefresh.setOnRefreshListener(this::fetchFeed);
 
+        // Scroll infini
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView rv, int dx, int dy) {
@@ -82,7 +74,7 @@ public class MyInformation extends AppCompatActivity {
                     int past = layoutManager.findFirstVisibleItemPosition();
 
                     if ((visible + past) >= total) {
-                        fetchFeed(); // recharge 10 nouvelles images
+                        fetchFeed();
                     }
                 }
             }
@@ -95,6 +87,7 @@ public class MyInformation extends AppCompatActivity {
         new FetchFeedTask().execute(UNSPLASH_URL);
     }
 
+    // AsyncTask pour récupérer les images + infos
     private class FetchFeedTask extends AsyncTask<String, Void, JSONArray> {
         @Override
         protected JSONArray doInBackground(String... urls) {
@@ -126,21 +119,29 @@ public class MyInformation extends AppCompatActivity {
                 try {
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject obj = array.getJSONObject(i);
-                        String description = obj.optString("description", "Sans description");
+                        String description = obj.optString("description");
+                        String altDescription = obj.optString("alt_description");
                         String author = obj.getJSONObject("user").optString("name", "Anonyme");
                         String image = obj.getJSONObject("urls").getString("regular");
 
-                        // Traduire la description en français
-                        translator.translate(description)
-                                .addOnSuccessListener(translatedText -> {
-                                    list.add(new InfoItem(translatedText, author, image));
-                                    adapter.notifyDataSetChanged();
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Si erreur traduction, on garde l'original
-                                    list.add(new InfoItem(description, author, image));
-                                    adapter.notifyDataSetChanged();
-                                });
+                        // Fallback texte si null ou trop court
+                        if (description == null || description.equals("null") || description.trim().length() < 2) {
+                            if (altDescription != null && !altDescription.equals("null") && altDescription.trim().length() >= 2) {
+                                description = altDescription;
+                            } else {
+                                description = "Toute l’équipe Mally vous salue";
+                            }
+                        }
+
+                        final String textToTranslate = description;
+                        final String finalAuthor = author;
+
+                        // Traduction via LibreTranslate
+                        translateWithLibre(textToTranslate, translatedText -> {
+                            InfoItem item = new InfoItem(translatedText, finalAuthor, image);
+                            list.add(item);
+                            adapter.notifyItemInserted(list.size() - 1);
+                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -151,9 +152,51 @@ public class MyInformation extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        translator.close(); // fermer ML Kit proprement
+    // Traduction en ligne via LibreTranslate
+    private void translateWithLibre(String text, InfoItemCallback callback) {
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                try {
+                    URL url = new URL("https://libretranslate.com/translate");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                    conn.setDoOutput(true);
+
+                    String jsonInput = "{\"q\":\"" + escapeJson(text) + "\",\"source\":\"en\",\"target\":\"fr\"}";
+                    conn.getOutputStream().write(jsonInput.getBytes("utf-8"));
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) sb.append(line);
+                    reader.close();
+
+                    JSONObject obj = new JSONObject(sb.toString());
+                    return obj.getString("translatedText");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return text; // fallback
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String translated) {
+                callback.onTranslated(translated);
+            }
+        }.execute();
+    }
+
+    // Échapper le texte pour JSON (protection guillemets, accents, retour ligne)
+    private String escapeJson(String text) {
+        return text.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r");
+    }
+
+    interface InfoItemCallback {
+        void onTranslated(String translatedText);
     }
 }

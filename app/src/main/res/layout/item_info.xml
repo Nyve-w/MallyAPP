@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="@android:color/white">
+        android:background="@drawable/btn_color">
 
         <ImageView
             android:id="@+id/itemImage"
@@ -27,7 +27,7 @@
             android:text="Titre"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
         android:paddingTop="5dp"/>
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Contenu"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
         android:paddingTop="2dp"/>
     </LinearLayout>
 
