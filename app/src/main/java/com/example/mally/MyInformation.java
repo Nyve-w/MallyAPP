@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.mlkit.nl.translate.TranslateLanguage;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +39,9 @@ public class MyInformation extends AppCompatActivity {
 
     boolean isLoading = false;
 
+    // ML Kit Translator
+    Translator translator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +61,17 @@ public class MyInformation extends AppCompatActivity {
         lottieLoading = findViewById(R.id.lottieLoading);
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
+        // Initialiser ML Kit translator vers français
+        TranslatorOptions options =
+                new TranslatorOptions.Builder()
+                        .setSourceLanguage(TranslateLanguage.ENGLISH)
+                        .setTargetLanguage(TranslateLanguage.FRENCH)
+                        .build();
+        translator = com.google.mlkit.nl.translate.Translation.getClient(options);
+
         fetchFeed();
 
-        swipeRefresh.setOnRefreshListener(() -> fetchFeed());
+        swipeRefresh.setOnRefreshListener(this::fetchFeed);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -68,7 +82,7 @@ public class MyInformation extends AppCompatActivity {
                     int past = layoutManager.findFirstVisibleItemPosition();
 
                     if ((visible + past) >= total) {
-                        fetchFeed(); // reload 10 nouvelles images
+                        fetchFeed(); // recharge 10 nouvelles images
                     }
                 }
             }
@@ -96,7 +110,6 @@ public class MyInformation extends AppCompatActivity {
                 reader.close();
 
                 return new JSONArray(sb.toString());
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -113,12 +126,22 @@ public class MyInformation extends AppCompatActivity {
                 try {
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject obj = array.getJSONObject(i);
-                        String title = obj.optString("description", "Sans description");
-                        String content = obj.getJSONObject("user").optString("name", "Anonyme");
+                        String description = obj.optString("description", "Sans description");
+                        String author = obj.getJSONObject("user").optString("name", "Anonyme");
                         String image = obj.getJSONObject("urls").getString("regular");
-                        list.add(new InfoItem(title, content, image));
+
+                        // Traduire la description en français
+                        translator.translate(description)
+                                .addOnSuccessListener(translatedText -> {
+                                    list.add(new InfoItem(translatedText, author, image));
+                                    adapter.notifyDataSetChanged();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Si erreur traduction, on garde l'original
+                                    list.add(new InfoItem(description, author, image));
+                                    adapter.notifyDataSetChanged();
+                                });
                     }
-                    adapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -126,5 +149,11 @@ public class MyInformation extends AppCompatActivity {
                 Toast.makeText(MyInformation.this, "Impossible de récupérer le feed", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        translator.close(); // fermer ML Kit proprement
     }
 }
