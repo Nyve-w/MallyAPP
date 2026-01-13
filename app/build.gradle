@@ -37,6 +37,9 @@ dependencies {
     implementation "com.airbnb.android:lottie:6.7.1"
     //implementation 'com.google.android.exoplayer:exoplayer:2.20.0'
     //implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    // Glide pour charger les images
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
 
 
     testImplementation 'junit:junit:4.13.2'
