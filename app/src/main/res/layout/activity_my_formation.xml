@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer"
-    tools:context=".myFormation">
+    tools:context=".MyFormation">
 
     <!-- Contenu principal -->
     <LinearLayout

@@ -2,60 +2,129 @@ package com.example.mally;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView formation;
-    ImageView information;
-    ImageView jeu;
-    ImageView musique;
+
+    ImageView formation, information, jeu, musique;
+
+    LinearLayout rootContainer;
+    FrameLayout splashOverlay;
+    LottieAnimationView lottieView;
+
+    private static final String PREFS = "app_prefs";
+    private static final String SPLASH_KEY = "splash_shown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         method_for_match_id();
 
-        // Toolbar simple
+        if (hasSplashBeenShown()) {
+            splashOverlay.setVisibility(View.GONE);
+            rootContainer.setAlpha(1f);
+        } else {
+            playSplash();
+        }
+
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(view ->
-                Toast.makeText(MainActivity.this, "Fini de coder ça Monsieur", Toast.LENGTH_SHORT).show()
+        toolbar.setNavigationOnClickListener(v ->
+                Toast.makeText(this, "Fini de coder ça Monsieur", Toast.LENGTH_SHORT).show()
         );
 
-        // Sécurisation des clics pour éviter crash si activité manquante
         setupClick(formation, MyFormation.class);
         setupClick(information, MyInformation.class);
         setupClick(jeu, MyGame.class);
         setupClick(musique, MyMusique.class);
     }
 
-    // Associe les ImageView aux IDs du layout
-    private void method_for_match_id(){
+    private void method_for_match_id() {
         formation = findViewById(R.id.formation);
         information = findViewById(R.id.information);
         jeu = findViewById(R.id.jeu);
         musique = findViewById(R.id.musique);
+
+        rootContainer = findViewById(R.id.rootContainer);
+        splashOverlay = findViewById(R.id.splashOverlay);
+        lottieView = findViewById(R.id.lottieView);
     }
 
-    // Méthode sécurisée pour gérer les clics sur les ImageView
-    private void setupClick(ImageView img, Class<?> targetActivity){
-        if(img == null) return; // sécurité
+    private void playSplash() {
+        rootContainer.setAlpha(0f);
+        saveSplashState();
+
+        long startTime = System.currentTimeMillis();
+
+        lottieView.addAnimatorListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+                long elapsed = System.currentTimeMillis() - startTime;
+                long delay = Math.max(0, 3000 - elapsed);
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+                    splashOverlay.animate()
+                            .alpha(0f)
+                            .setDuration(400)
+                            .withEndAction(() -> {
+                                splashOverlay.setVisibility(View.GONE);
+                                rootContainer.animate()
+                                        .alpha(1f)
+                                        .setDuration(600)
+                                        .start();
+                            })
+                            .start();
+
+                }, delay);
+            }
+        });
+    }
+
+    private boolean hasSplashBeenShown() {
+        return getSharedPreferences(PREFS, MODE_PRIVATE)
+                .getBoolean(SPLASH_KEY, false);
+    }
+
+    private void saveSplashState() {
+        getSharedPreferences(PREFS, MODE_PRIVATE)
+                .edit()
+                .putBoolean(SPLASH_KEY, true)
+                .apply();
+    }
+
+    private void setupClick(ImageView img, Class<?> target) {
+        if (img == null) return;
         img.setOnClickListener(v -> {
             try {
-                Intent intent = new Intent(MainActivity.this, targetActivity);
-                startActivity(intent);
+                startActivity(new Intent(this, target));
             } catch (Exception e) {
-                // Si l'activité n'existe pas ou problème → message toast au lieu de crash
-                Toast.makeText(MainActivity.this,
-                        "Cette fonctionnalité n'est pas disponible pour le moment",
+                Toast.makeText(this,
+                        "Cette fonctionnalité n'est pas disponible",
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (splashOverlay.getVisibility() == View.VISIBLE) return;
+        super.onBackPressed();
     }
 }
