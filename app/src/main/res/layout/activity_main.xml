@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/dg_bg">
 
     <!-- ================= SCROLL + CONTENU ================= -->
 
@@ -27,7 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/bg_color"
                 tools:context=".MainActivity">
 
                 <com.google.android.material.appbar.AppBarLayout
