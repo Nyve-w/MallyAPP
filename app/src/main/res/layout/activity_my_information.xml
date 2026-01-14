@@ -7,10 +7,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_color">
 
+    <!-- Contenu principal avec toolbar + swipe + recycler -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- AppBar -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -26,6 +28,7 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <!-- SwipeRefresh + FrameLayout pour loader + RecyclerView -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
@@ -36,7 +39,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <!-- RecyclerView pour le feed -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/infoRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"/>
 
+                <!-- Lottie loader -->
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/lottieLoading"
                     android:layout_width="220dp"
@@ -49,10 +59,12 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <!-- Navigation drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/bottom_view"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>
