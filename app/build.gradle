@@ -11,9 +11,9 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    ndkVersion "26.1.1 "
 
     buildTypes {
         release {
@@ -31,7 +31,6 @@ android {
         jniLibs {
             useLegacyPackaging = false
         }
-    }
 }
 
 dependencies {
@@ -59,4 +58,5 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
 }
