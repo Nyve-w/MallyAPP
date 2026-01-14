@@ -12,6 +12,10 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 
@@ -75,8 +79,11 @@ public class GameView extends View implements GestureDetector.OnGestureListener
         gestureDetector = new GestureDetector(getContext(), this);
         Resources res = getResources();
         headerForegroundColor = res.getColor( R.color.headerForegroundColor );
-        backgroundColor = res.getColor( R.color.backgroundColor );
-        redColor = res.getColor( R.color.redColor );
+        backgroundColor=res.getColor( R.color.backSolitaire );
+
+        //backgroundColor = res.getColor( R.color.backgroundColor );
+        //redColor = res.getColor( R.color.redColor );
+        redColor= res.getColor( R.color.textSolitaire );;
         startTime = System.currentTimeMillis();
         timerHandler.post(timerRunnable);
         dbHelper = new GameDatabaseHelper(getContext());
@@ -289,7 +296,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener
         paint.setTextAlign( Paint.Align.CENTER );
         paint.setTextSize( (int) (getWidth() / 8.5) );
         canvas.drawText( getResources().getString(R.string.game_name),
-                widthDiv10 * 5, (int) (heightDiv10 * 0.5), paint );
+                widthDiv10 * 5, (int) (heightDiv10 * 0.6), paint );
 
         paint.setColor( headerForegroundColor );
         paint.setTextAlign( Paint.Align.LEFT );
@@ -487,6 +494,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener
             gameFinished = true;
 
             timerHandler.removeCallbacks(timerRunnable);
+            askUsernameAndSaveScore();
 
             // ✅ UNE SEULE SAUVEGARDE
             dbHelper.saveScore(game.score, elapsedTime);
@@ -496,12 +504,14 @@ public class GameView extends View implements GestureDetector.OnGestureListener
             bestScore = dbHelper.getBestScore();
             bestTime = dbHelper.getBestTime();
 
+
             Log.d("GAME", "🎉 Partie terminée !");
             Log.d("GAME", "Score : " + game.score);
             Log.d("GAME", "Temps : " + getFormattedTime());
 
             // plus tard : dialog victoire
         }
+
     }
 
     @Override
@@ -540,8 +550,29 @@ public class GameView extends View implements GestureDetector.OnGestureListener
         return elapsedTime;
     }
 
+    private void askUsernameAndSaveScore() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Partie terminée !");
+
+        final EditText input = new EditText(getContext());
+        input.setHint("Entrez votre pseudo");
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String username = input.getText().toString().trim();
+            if (!username.isEmpty()) {
+                //dbHelper.saveScoreWithUsername(username, game.score, elapsedTime);
+                Toast.makeText(getContext(), "Score sauvegardé !", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+
+
 }
-
-
 
 

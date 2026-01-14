@@ -54,7 +54,7 @@
                         android:layout_height="180dp"
                         android:onClick="ouvrirJeu1"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/sudoku"
+                        app:srcCompat="@drawable/g_sudoku"
                         tools:srcCompat="@drawable/g_sudoku" />
 
                     <TextView

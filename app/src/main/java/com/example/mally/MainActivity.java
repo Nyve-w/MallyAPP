@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Toast.makeText(MainActivity.this, "Fini de coder ça Monsieur", Toast.LENGTH_SHORT).show();
             }
         });
@@ -39,35 +40,35 @@ public class MainActivity extends AppCompatActivity {
     public void method_for_match_id(){
         formation=findViewById(R.id.formation);
         information=findViewById(R.id.information);
-
         jeu=findViewById(R.id.jeu);
         musique=findViewById(R.id.musique);
     }
-    public void methForOpenFiles(View v){
+    public void methoForOpenIcon(MenuItem item){
         Intent openChaussure = new Intent(this,myFormation.class);
         startActivity(openChaussure);;
+        switch (item.getItemId()) {}
 
     }
 
-    public void methForOpenFiles2(View v){
+    public void methForOpenInformation(View v){
         Intent openChaussure = new Intent(this,MyInformation.class);
         startActivity(openChaussure);;
 
     }
 
-    public void methForOpenFiles3(View v){
+    public void methForOpenGames(View v){
         Intent openChaussure = new Intent(this,MyGame.class);
         startActivity(openChaussure);;
 
     }
 
-    public void methForOpenFiles4(View v){
+    public void methForOpenMusique(View v){
         Intent openChaussure = new Intent(this,MyMusique.class);
         startActivity(openChaussure);;
 
     }
-    public void methtry(View v){
-        Intent openChaussure = new Intent(this,MyGame.class);
+    public void methForOpenFormation(View v){
+        Intent openChaussure = new Intent(this,myFormation.class);
         startActivity(openChaussure);;
 
     }

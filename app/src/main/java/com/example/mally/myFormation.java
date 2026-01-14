@@ -15,10 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import org.jetbrains.annotations.TestOnly;
 
 import java.io.File;
 
@@ -118,5 +121,18 @@ public class myFormation extends AppCompatActivity {
     /*public void moveTooFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.container_view,fragment).commit();
     }*/
+    public void methtry(MenuItem item) {
+        // Code à exécuter quand l'item du menu est cliqué
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+               finish();
+
+            case R.id.nav_help:
+                Toast.makeText(this,"En quoi puis je vous aider",Toast.LENGTH_LONG);
+                // faire autre chose
+                break;
+        }
+    }
+
 
 }

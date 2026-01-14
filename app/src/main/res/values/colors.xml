@@ -12,7 +12,9 @@
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
     <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#EADEDE</color>
+    <color name="backSolitaire">#FF4CAF50</color>
+    <color name="textSolitaire">#BED6EA</color>
 
     <!-- Couleurs spécifiques à ton application -->
     <color name="headerForegroundColor">#e0e0e0</color>

@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/nav_help"
-        android:title="Help"
-        android:icon="@drawable/ic_baseline_help_24">
-
-    </item>
-
 
     <item
         android:id="@+id/nav_home"
@@ -16,4 +9,12 @@
         android:title="Home">
 
     </item>
+    <item
+        android:id="@+id/nav_help"
+        android:title="Help"
+        android:icon="@drawable/ic_baseline_help_24">
+
+    </item>
+
+
 </menu>

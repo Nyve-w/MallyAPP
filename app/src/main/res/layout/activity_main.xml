@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:onClick="methForOpenFiles"
+                    android:onClick="methForOpenFormation"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/watch" />
 
@@ -110,7 +110,7 @@
                     android:layout_height="150dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:onClick="methForOpenFiles3"
+                    android:onClick="methForOpenGames"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/game" />
             </LinearLayout>
@@ -147,7 +147,7 @@
                     android:layout_height="150dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:onClick="methForOpenFiles4"
+                    android:onClick="methForOpenMusique"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/music" />
             </LinearLayout>
@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:layout_marginTop="10dp"
-                    android:onClick="methForOpenFiles2"
+                    android:onClick="methForOpenInformation"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/look" />
 
