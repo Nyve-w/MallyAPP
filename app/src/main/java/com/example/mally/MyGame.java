@@ -2,24 +2,57 @@ package com.example.mally;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MyGame extends AppCompatActivity {
-    BottomNavigationView bottomNavigationView;
+
+    private BottomNavigationView bottomNavigationView;
+    private LottieAnimationView lottieLoading;
+    private FrameLayout loaderContainer;
+
+    private static final int LOADING_DURATION = 3000; // ms
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_game);
-        bottomNavigationView=findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.GONE); // cachée au départ
+
+        initLoader();
+        initBottomNavigation();
+    }
+
+    /* ===================== LOADER ===================== */
+
+    private void initLoader() {
+        loaderContainer = findViewById(R.id.loader_container);
+        lottieLoading = findViewById(R.id.lottieLoading);
+
+        loaderContainer.setVisibility(View.VISIBLE);
+        lottieLoading.playAnimation();
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            lottieLoading.cancelAnimation();
+            loaderContainer.setVisibility(View.GONE);
+
+            bottomNavigationView.setVisibility(View.VISIBLE); // affichée après
+        }, LOADING_DURATION);
+    }
+
+    /* ===================== BOTTOM NAV ===================== */
+
+    private void initBottomNavigation() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             Intent intent = null;
@@ -34,52 +67,31 @@ public class MyGame extends AppCompatActivity {
                     intent = new Intent(this, UserGameParties.class);
                     break;
 
-                /*case R.id.nav_game:
-                    intent = new Intent(this, MyGame.class);
-                    break;*/
+                case R.id.nav_game:
+                    return true; // déjà ici
             }
 
             if (intent != null) {
                 startActivity(intent);
+                finish();
             }
 
             return true;
         });
-
-
-    }
-    public void methtry(MenuItem item) {
-        // Exemple de code à exécuter selon l'item cliqué
-        switch (item.getItemId()) {
-            case R.id.nav_help:
-                Toast.makeText(this, "Item 1 cliqué", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_home:
-                finish();
-        }
     }
 
-    private void moveTooFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container_view,fragment).commit();
+    /* ===================== ACTIONS ===================== */
+
+    public void ouvrirJeu2(View v) {
+        startActivity(new Intent(this, jeu_solitaire.class));
     }
 
-    public void ouvrirJeu2(View v){
-        Intent openGame1 = new Intent(this,jeu_solitaire.class);
-        startActivity(openGame1);;
+    public void ouvrirJeu1(View v) {
+        new AlertDialog.Builder(this)
+                .setTitle("Mally Information")
+                .setMessage("Ce jeu n'est pas disponible dans votre region")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("OK", null)
+                .show();
     }
-    public void ouvrirJeu1(View v){
-        AlertDialog.Builder messageAlert=new AlertDialog.Builder(this);
-        messageAlert.setTitle("Mally Information");
-        messageAlert.setMessage("Ce jeu n'est pas disponible dans votre region");
-        messageAlert.setIcon(android.R.drawable.ic_dialog_info);
-        messageAlert.show();
-        Intent openGame2 = new Intent(this,hangmanGame.class);
-        startActivity(openGame2);;
-
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed(); // retour normal
-    }
-
 }
