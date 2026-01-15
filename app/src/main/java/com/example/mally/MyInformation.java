@@ -26,14 +26,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import androidx.core.view.GravityCompat;
-
-
+import java.util.List;
 
 public class MyInformation extends AppCompatActivity {
 
     private static final String NEWS_API_URL =
-            "https://api.thenewsapi.com/v1/news/all?api_token=3o8WFmp53Ic3VmYkiUBQXxhEJgJBKbWDaXJMR35J&q=Congo OR RDC OR Kinshasa&language=fr&limit=10";
+            "https://api.thenewsapi.com/v1/news/all?api_token=NUbnPpC9JNn2FhKQVsxGYasyqG4xYlb7ikVKrinn&q=Congo OR RDC OR Kinshasa&language=fr&limit=10";
 
     private RecyclerView recyclerView;
     private InfoAdapter adapter;
@@ -52,51 +50,32 @@ public class MyInformation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_information);
 
-        // ===== Drawer & Toolbar =====
         drawerLayout = findViewById(R.id.drawer);
         toolbarInfo = findViewById(R.id.toolbar_info);
         setSupportActionBar(toolbarInfo);
-
-        // Hamburger ouvre Drawer
         toolbarInfo.setNavigationIcon(R.drawable.ic_baseline_menu_24);
         toolbarInfo.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
-        // ===== Navigation Drawer =====
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
             Intent intent = null;
             switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(this, MainActivity.class);
-                    break;
-                case R.id.nav_help:
-                    intent = new Intent(this, Help_Games.class);
-                    break;
-                case R.id.nav_user:
-                    intent = new Intent(this, UserGameParties.class);
-                    break;
-                case R.id.nav_game:
-                    intent = new Intent(this, MyGame.class);
-                    break;
+                case R.id.nav_home: intent = new Intent(this, MainActivity.class); break;
+                case R.id.nav_help: intent = new Intent(this, Help_Games.class); break;
+                case R.id.nav_user: intent = new Intent(this, UserGameParties.class); break;
+                case R.id.nav_game: return true;
             }
-
-            if (intent != null) {
-                startActivity(intent);
-                finish();
-            }
-
-            drawerLayout.closeDrawer(Gravity.START);
+            if (intent != null) { startActivity(intent); finish(); }
+            drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
 
-        // ===== RecyclerView =====
         recyclerView = findViewById(R.id.infoRecyclerView);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new InfoAdapter(this, list);
         recyclerView.setAdapter(adapter);
 
-        // ===== Loader et Swipe =====
         lottieLoading = findViewById(R.id.lottieLoading);
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
@@ -108,7 +87,6 @@ public class MyInformation extends AppCompatActivity {
             fetchFeed();
         });
 
-        // ===== Scroll infini =====
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView rv, int dx, int dy) {
@@ -124,7 +102,8 @@ public class MyInformation extends AppCompatActivity {
             }
         });
 
-        // ===== Chargement initial =====
+        // Affiche le cache puis fetch API
+        loadCache();
         showLoading();
         fetchFeed();
     }
@@ -132,15 +111,12 @@ public class MyInformation extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Recharge les news fraîches à chaque retour
-        list.clear();
-        adapter.notifyDataSetChanged();
+        loadCache();
         page = 1;
         showLoading();
         fetchFeed();
     }
 
-    // ================= UI STATES =================
     private void showLoading() {
         isLoading = true;
         lottieLoading.setVisibility(LottieAnimationView.VISIBLE);
@@ -155,14 +131,21 @@ public class MyInformation extends AppCompatActivity {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
-    // ================= API =================
+    private void loadCache() {
+        list.clear();
+        List<NewsItemEntity> cached = AppDatabase.getInstance(this).newsDao().getAllNews();
+        for (NewsItemEntity n : cached) {
+            list.add(new InfoItem(n.title, n.content, n.imageUrl, n.sourceName, n.publishedAt, n.url));
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     private void fetchFeed() {
         String urlWithPage = NEWS_API_URL + "&page=" + page;
         new FetchNewsTask().execute(urlWithPage);
     }
 
     private class FetchNewsTask extends AsyncTask<String, Void, JSONArray> {
-
         @Override
         protected JSONArray doInBackground(String... urls) {
             try {
@@ -179,10 +162,7 @@ public class MyInformation extends AppCompatActivity {
                 JSONObject root = new JSONObject(sb.toString());
                 return root.getJSONArray("data");
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
+            } catch (Exception e) { e.printStackTrace(); return null; }
         }
 
         @Override
@@ -212,9 +192,17 @@ public class MyInformation extends AppCompatActivity {
                 }
 
                 adapter.notifyItemRangeInserted(start, articles.length());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+                // Sauvegarder dans Room
+                List<NewsItemEntity> entities = new ArrayList<>();
+                for (InfoItem i : list) {
+                    entities.add(new NewsItemEntity(i.title, i.content, i.imageUrl, i.sourceName, i.publishedAt, i.url));
+                }
+                AppDatabase db = AppDatabase.getInstance(MyInformation.this);
+                db.newsDao().deleteAll();
+                db.newsDao().insertAll(entities);
+
+            } catch (Exception e) { e.printStackTrace(); }
         }
     }
 }

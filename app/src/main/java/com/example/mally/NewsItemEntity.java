@@ -1,6 +1,14 @@
 package com.example.mally;
 
-public class InfoItem {
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "news")
+public class NewsItemEntity {
+
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
     public String title;
     public String content;
     public String imageUrl;
@@ -8,7 +16,7 @@ public class InfoItem {
     public String publishedAt;
     public String url;
 
-    public InfoItem(String title, String content, String imageUrl, String sourceName, String publishedAt, String url) {
+    public NewsItemEntity(String title, String content, String imageUrl, String sourceName, String publishedAt, String url) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
