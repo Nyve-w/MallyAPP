@@ -1,6 +1,9 @@
 package com.example.mally;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,15 +38,40 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.InfoViewHolder
     @Override
     public void onBindViewHolder(@NonNull InfoViewHolder holder, int position) {
         InfoItem item = items.get(position);
+
         holder.title.setText(item.title);
         holder.content.setText(item.content);
+        holder.sourceDate.setText(item.sourceName + (item.publishedAt.isEmpty() ? "" : " • " + item.publishedAt));
 
+        // Texte déroulable
+        holder.content.setMaxLines(3);
+        holder.content.setEllipsize(TextUtils.TruncateAt.END);
+        holder.content.setOnClickListener(v -> {
+            if (holder.content.getMaxLines() == 3) {
+                holder.content.setMaxLines(Integer.MAX_VALUE);
+                holder.content.setEllipsize(null);
+            } else {
+                holder.content.setMaxLines(3);
+                holder.content.setEllipsize(TextUtils.TruncateAt.END);
+            }
+            holder.content.requestLayout();
+        });
+
+        // Glide avec placeholder
         Glide.with(context)
-                .load(item.imageUrl)
+                .load(item.imageUrl != null && !item.imageUrl.isEmpty() ? item.imageUrl : "https://via.placeholder.com/400x200.png?text=No+Image")
                 .placeholder(android.R.color.darker_gray)
                 .error(android.R.color.darker_gray)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.image);
+
+        // Click sur la card → navigateur
+        holder.itemView.setOnClickListener(v -> {
+            if (item.url != null && !item.url.isEmpty()) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.url));
+                context.startActivity(browserIntent);
+            }
+        });
     }
 
     @Override
@@ -51,15 +79,16 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.InfoViewHolder
         return items.size();
     }
 
-    public static class InfoViewHolder extends RecyclerView.ViewHolder {
-        TextView title, content;
+    static class InfoViewHolder extends RecyclerView.ViewHolder {
+        TextView title, content, sourceDate;
         ImageView image;
 
-        public InfoViewHolder(@NonNull View itemView) {
+        InfoViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.itemTitle);
             content = itemView.findViewById(R.id.itemContent);
             image = itemView.findViewById(R.id.itemImage);
+            sourceDate = itemView.findViewById(R.id.itemSourceDate);
         }
     }
 }

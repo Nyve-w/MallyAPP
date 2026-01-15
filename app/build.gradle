@@ -11,9 +11,9 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    ndkVersion "26.1.1 "
 
     buildTypes {
         release {
@@ -31,7 +31,6 @@ android {
         jniLibs {
             useLegacyPackaging = false
         }
-    }
 }
 
 dependencies {
@@ -49,6 +48,8 @@ dependencies {
     // Glide pour charger les images
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation "androidx.room:room-runtime:2.6.0"
+    annotationProcessor "androidx.room:room-compiler:2.6.0"
 
 
     testImplementation 'junit:junit:4.13.2'
@@ -59,4 +60,5 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
 }
