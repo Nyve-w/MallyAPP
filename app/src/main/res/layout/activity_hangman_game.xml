@@ -5,62 +5,110 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_color"
+    android:background="@drawable/bgcolor_hangman"
     tools:context=".hangmanGame">
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="25dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_height="200dp">
 
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/hangman_icon" />
 
-    <LinearLayout
+    </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/wordDisplay"
+        android:layout_marginStart="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:padding="16dp"
+        android:textColor="@color/hangman_black"
+        android:textSize="24sp">
 
-        <TextView
-            android:id="@+id/texteV"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:background="@drawable/textview_color"
-            android:padding="30dp"
-            android:text="Entrez une lettre" />
+    </TextView>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        android:backgroundTint="@color/hangman_btncolo">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-            <TextView
+            <!-- Champ texte -->
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                app:boxBackgroundColor="@color/white_soft"
+                app:boxBackgroundMode="filled"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/hangman_inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="1"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Rechercher -->
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingTop="10sp"
-                android:text="Rechercher" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <SearchView
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
+                <ImageButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
 
-            </SearchView>
+                    android:src="@drawable/ic_baseline_search_24"
+                    android:tint="@android:color/white" />
+
+
+            </LinearLayout>
+
         </LinearLayout>
-
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_height="350dp">
+        android:layout_height="match_parent"
+       android:layout_marginTop="7dp">
 
         <GridLayout
             android:id="@+id/gridLayout"
-            android:background="@drawable/btn_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alignmentMode="alignMargins"
+            android:background="@drawable/bgcolor_hangman"
             android:columnCount="4"
             android:paddingStart="16sp"
             android:rowCount="2"

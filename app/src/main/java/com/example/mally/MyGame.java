@@ -58,12 +58,13 @@ public class MyGame extends AppCompatActivity {
             Intent intent = null;
 
             switch (item.getItemId()) {
-
+                case  R.id.nav_home:
+                        finish();
                 case R.id.nav_help:
                     intent = new Intent(this, Help_Games.class);
                     break;
 
-                case R.id.nav_profile:
+                case R.id.nav_user:
                     intent = new Intent(this, UserGameParties.class);
                     break;
 
@@ -85,6 +86,9 @@ public class MyGame extends AppCompatActivity {
     public void ouvrirJeu2(View v) {
         startActivity(new Intent(this, jeu_solitaire.class));
     }
+    public void ouvrirJeu3(View v) {
+        startActivity(new Intent(this, hangmanGame.class));
+    }
 
     public void ouvrirJeu1(View v) {
         new AlertDialog.Builder(this)
@@ -93,5 +97,6 @@ public class MyGame extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setPositiveButton("OK", null)
                 .show();
+
     }
 }

@@ -28,7 +28,9 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_margin="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
         android:layout_height="400dp"
         android:background="@drawable/stroke"
         app:cardBackgroundColor="#EFE8E8"
@@ -98,4 +100,80 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_height="400dp"
+        android:background="@drawable/stroke"
+        app:cardBackgroundColor="#EFE8E8"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/btn_color">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" JEU HANGMAN"
+                android:gravity="center"
+                android:textSize="32dp"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                app:srcCompat="@drawable/ic_baseline_local_mall_24" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/textview_color"
+                android:padding="20sp"
+                android:text="Nom Utilisateur"
+                android:textColor="#A08CFF" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20sp"
+                android:background="@drawable/textview_color"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="3dp"
+                android:text="Meilleur Score "
+                android:textColor="#A08CFF"/>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20sp"
+                android:background="@drawable/textview_color"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="3dp"
+                android:text="Meilleur Temps"
+                android:textColor="#A08CFF"/>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
 </android.widget.LinearLayout>
