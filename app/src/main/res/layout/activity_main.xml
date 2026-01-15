@@ -42,7 +42,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:menu="@menu/main_menu"
-                        app:navigationIcon="@drawable/ic_baseline_menu_24"
+                        app:navigationIcon="@drawable/ic_launcher"
+                        android:minWidth="30dp" android:minHeight="40dp"
+                        android:padding="10dp"
                         app:title="Mally" />
                 </com.google.android.material.appbar.AppBarLayout>
 
