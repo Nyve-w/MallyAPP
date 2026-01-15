@@ -1,118 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bgcolor_hangman"
-    tools:context=".hangmanGame">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
+    <android.widget.LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="25dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hangman_icon" />
-
-    </com.google.android.material.card.MaterialCardView>
-    <TextView
-        android:id="@+id/wordDisplay"
-        android:layout_marginStart="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:padding="16dp"
-        android:textColor="@color/hangman_black"
-        android:textSize="24sp">
-
-    </TextView>
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="6dp"
-        android:backgroundTint="@color/hangman_btncolo">
-
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_color"
+        android:orientation="vertical"
+        tools:context=".hangmanGame">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:padding="10dp"
+            android:weightSum="2">
 
-            <!-- Champ texte -->
-            <com.google.android.material.textfield.TextInputLayout
-
+            <TextView
+                android:id="@+id/tvScore"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="Score: 0"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                app:boxBackgroundColor="@color/white_soft"
-                app:boxBackgroundMode="filled"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp">
-
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/hangman_inputText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapCharacters"
-                    android:maxLength="1"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Rechercher -->
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvLives"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:text="Vies: ❤️❤️❤️❤️❤️❤️"
+                android:gravity="end"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/btnSearch"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:id="@+id/hangman_image"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/hangman_icon" />
 
-                    android:src="@drawable/ic_baseline_search_24"
-                    android:tint="@android:color/white" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <!-- Champ texte -->
+                    <TextView
+                        android:id="@+id/hangman_inputText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="💡 Indice : Je sui un jeu qui tue"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <!-- Rechercher
+                 <com.google.android.material.textfield.TextInputLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    app:boxBackgroundColor="@color/white_soft"
+                    app:boxBackgroundMode="filled"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp">
 
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/hangman_inputText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="1"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                -->
+                    <!--<LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnSearch"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+
+                        android:src="@drawable/ic_baseline_search_24"
+                        android:tint="@android:color/white" />
+
+
+                </LinearLayout>-->
+
+                </LinearLayout>
             </LinearLayout>
 
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/wordDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:padding="16dp"
+            android:textColor="@color/hangman_black"
+            android:textSize="24sp">
+        </TextView>
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       android:layout_marginTop="7dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/hangman_btncolo"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
-        <GridLayout
-            android:id="@+id/gridLayout"
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alignmentMode="alignMargins"
-            android:background="@drawable/bgcolor_hangman"
-            android:columnCount="4"
-            android:paddingStart="16sp"
-            android:rowCount="2"
-            android:rowOrderPreserved="false" />
-    </androidx.cardview.widget.CardView>
+            android:layout_marginTop="7dp">
 
-</android.widget.LinearLayout>
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alignmentMode="alignMargins"
+                android:background="@drawable/bgcolor_hangman"
+                android:columnCount="4"
+                android:paddingStart="16sp"
+                android:rowCount="2"
+                android:rowOrderPreserved="false" />
+        </androidx.cardview.widget.CardView>
+
+    </android.widget.LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/winOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="#AA000000"
+        android:elevation="20dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+            <VideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp" />
+
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="70dp"
+            android:backgroundTint="@color/white"
+            android:text="Start a new game"
+            android:textColor="@color/black" />
+    </FrameLayout>
+</FrameLayout>
