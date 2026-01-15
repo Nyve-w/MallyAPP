@@ -61,6 +61,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:background="@drawable/btn_color"
                     android:padding="12dp">
 
                     <!-- Champ texte -->
@@ -71,7 +72,7 @@
                         android:gravity="center"
                         android:padding="12dp"
                         android:text="💡 Indice : Je sui un jeu qui tue"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="18sp" />
                  <com.google.android.material.textfield.TextInputLayout
 
