@@ -12,10 +12,17 @@
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
     <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#EADEDE</color>
+    <color name="backSolitaire">#FF4CAF50</color>
+    <color name="textSolitaire">#BED6EA</color>
 
     <!-- Couleurs spécifiques à ton application -->
     <color name="headerForegroundColor">#e0e0e0</color>
     <color name="backgroundColor">#026a15</color>
     <color name="redColor">#e61408</color>
+    <color name="white_soft">#F5F5F5</color>
+
+    <color name="hangman_black">#212121</color>
+    <color name="hangman_btncolo">#64B5F6</color>
+    <color name="hangman_gridLayoutColor">#6200EE</color>
 </resources>

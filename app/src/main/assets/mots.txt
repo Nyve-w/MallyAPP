@@ -1,0 +1,8 @@
+PROGRAMMATION;L'art d'écrire du code
+CAFE;Le carburant du développeur
+JAVA;Un langage de programmation robuste
+ANDROID;Le système mobile de Google
+KOTLIN;Le remplaçant moderne de Java
+STUDIO;L'endroit où on développe les apps
+LAYOUT;Fichier XML qui définit l'interface"
+Gemini;Mon meilleur ami du moment

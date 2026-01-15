@@ -88,7 +88,9 @@ public class MyGame extends AppCompatActivity {
     public void ouvrirJeu2(View v) {
         startActivity(new Intent(this, jeu_solitaire.class));
     }
-
+    public void ouvrirJeu3(View v) {
+        startActivity(new Intent(this, hangmanGame.class));
+    }
     public void ouvrirJeu1(View v) {
         new AlertDialog.Builder(this)
                 .setTitle("Mally Information")
