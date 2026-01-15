@@ -186,10 +186,7 @@ public class hangmanGame extends AppCompatActivity {
         }
 
         // 4. Mettre à jour l'affichage de l'indice
-        hangman_indice.setText(monIndice);
-    }
-
-
+        hangman_indice.setText(monIndice)
 
 
     private void updateWordDisplay() {
