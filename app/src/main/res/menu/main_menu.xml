@@ -1,15 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 🔝 HAUT -->
     <group android:checkableBehavior="single">
-    <item android:id="@+id/search"
-        android:title="home"
-        android:icon="@drawable/ic_baseline_search_24"
-        >
-        </item>
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/ic_baseline_home_24" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile"
+            android:icon="@drawable/ic_baseline_person_24" />
+
+        <item
+            android:id="@+id/nav_stats"
+            android:title="Stats"
+            android:icon="@drawable/ic_baseline_local_mall_24" />
     </group>
-    <item android:id="@+id/settings"
-        android:title="Paramètre"
-        android:icon="@drawable/ic_baseline_settings_24"
-        ></item>
-    </menu>
+
+    <!-- ───────────── -->
+    <item
+        android:id="@+id/divider_1"
+        android:title=""
+        android:enabled="false" />
+
+    <!-- 🔸 MILIEU -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Settings"
+            android:icon="@drawable/ic_baseline_settings_24" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:title="Help"
+            android:icon="@drawable/ic_baseline_help_24" />
+    </group>
+
+    <!-- ───────────── -->
+    <item
+        android:id="@+id/divider_2"
+        android:title=""
+        android:enabled="false" />
+
+    <!-- 🔻 BAS -->
+    <group android:checkableBehavior="single">
+        <item
+            android:title="Logout"
+            android:icon="@drawable/ic_baseline_lock_24" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:title="About"
+            android:icon="@drawable/ic_baseline_info_24" />
+    </group>
+
+</menu>

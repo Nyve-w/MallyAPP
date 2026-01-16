@@ -1,10 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.mally.GameView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/gameView"
     tools:context=".jeu_solitaire">
 
-</com.example.mally.GameView>
+    <!-- 🎮 Le jeu -->
+    <com.example.mally.GameView
+        android:id="@+id/gameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 🔻 Barre du bas -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="#66000000">
+
+        <!-- 🔙 Retour -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_baseline_back_24"
+            android:background="@android:color/transparent"
+            android:contentDescription="Retour" />
+
+        <!-- ❓ Aide -->
+        <ImageButton
+            android:id="@+id/btnHelp"
+            android:layout_width="40dp"
+            android:layout_marginStart="85dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_baseline_help_24"
+            android:background="@android:color/transparent"
+            android:contentDescription="Aide" />
+
+    </LinearLayout>
+
+</FrameLayout>

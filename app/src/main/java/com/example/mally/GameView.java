@@ -20,7 +20,8 @@ import java.util.ArrayList;
 
 public class GameView extends View implements GestureDetector.OnGestureListener {
     private long startTime;
-    String username;
+    private String bestPlayer;
+
     private long elapsedTime;
     private android.os.Handler timerHandler = new android.os.Handler();
     private GameDatabaseHelper dbHelper;
@@ -81,8 +82,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
 
         // 🔥 Récupération des données
         bestScore = dbHelper.getBestSolitaireScore();
-
-        //bestTime = dbHelper.getBestTime();
+        bestPlayer = dbHelper.getBestSolitairePlayer();
     }
 
     @Override
@@ -314,8 +314,108 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        // Gestion des taps (pioche, deck, stack) - inchangé
-        // ... (le code reste exactement le même que celui fourni)
+
+        RectF rect;
+
+        // --- Un tap sur les cartes non retournées de la pioche ---
+        rect = computePiocheRect();
+        if ( rect.contains( e.getX(), e.getY() ) ) {
+            if ( ! game.pioche.isEmpty() ) {
+                Card card = game.pioche.remove(0);
+                card.setReturned( true );
+                game.returnedPioche.add( card );
+            } else {
+                game.pioche.addAll( game.returnedPioche );
+                game.returnedPioche.clear();
+                for( Card card : game.pioche ) card.setReturned( false );
+            }
+            postInvalidate();
+            return true;
+        }
+
+        // --- Un tap sur les cartes retournées de la pioche ---
+        rect = computeReturnedPiocheRect();
+        if ( rect.contains( e.getX(), e.getY() ) && ! game.returnedPioche.isEmpty() ) {
+            final int stackIndex = game.canMoveCardToStack( game.returnedPioche.lastElement() );
+            if ( stackIndex > -1 ) {
+                Card selectedCard = game.returnedPioche.remove(game.returnedPioche.size() - 1);
+                game.stacks[stackIndex].add( selectedCard );
+                postInvalidate();
+                checkEndGame();
+
+                return true;
+            }
+
+            final int deckIndex = game.canMoveCardToDeck( game.returnedPioche.lastElement() );
+            if ( deckIndex > -1 ) {
+                Card selectedCard = game.returnedPioche.remove( game.returnedPioche.size() - 1 );
+                game.decks[deckIndex].add( selectedCard );
+                postInvalidate();
+                checkEndGame();
+
+                return true;
+            }
+        }
+
+        // --- Un tap sur une carte d'une deck ---
+        for( int deckIndex=0; deckIndex<Game.DECK_COUNT; deckIndex++ ) {
+            final Game.Deck deck = game.decks[deckIndex];
+            if ( ! deck.isEmpty() ) {
+                for( int i=deck.size()-1; i>=0; i-- ) {
+                    rect = computeDeckRect(deckIndex, i);
+                    if ( rect.contains(e.getX(), e.getY()) ) {
+                        // Click sur carte non retournée de la deck => on sort
+                        Card currentCard = deck.get(i);
+                        if ( ! currentCard.isReturned() ) return true;
+
+                        // Peut-on déplacer la carte du sommet de la deck vers une stack ?
+                        if ( i == deck.size() - 1 ) {       // On vérifie de bien être sur le sommet
+                            int stackIndex = game.canMoveCardToStack(currentCard);
+                            if (stackIndex > -1) {
+                                Card selectedCard = deck.remove(deck.size() - 1);
+                                if ( ! deck.isEmpty() ) deck.lastElement().setReturned(true);
+                                game.stacks[stackIndex].add( selectedCard );
+                                postInvalidate();
+                                checkEndGame();
+
+                                return true;
+                            }
+                        }
+
+                        // Peut-on déplacer la carte de la deck vers une autre deck ?
+                        final int deckIndex2 = game.canMoveCardToDeck( currentCard );
+                        if (deckIndex2 > -1) {
+                            if ( i == deck.size() - 1 ) {
+                                // On déplace qu'un carte
+                                Card selectedCard = deck.remove(deck.size() - 1);
+                                if ( ! deck.isEmpty() ) {
+                                    deck.lastElement().setReturned(true);
+                                }
+                                game.decks[deckIndex2].add( selectedCard );
+                            } else {
+                                // On déplace plusieurs cartes
+                                final ArrayList<Card> selectedCards = new ArrayList<>();
+                                for( int ci=deck.size()-1; ci>=i; ci-- ) {
+                                    selectedCards.add( 0, deck.remove( ci ) );
+                                }
+                                if ( ! deck.isEmpty() ) {
+                                    deck.lastElement().setReturned(true);
+                                }
+                                game.decks[deckIndex2].addAll( selectedCards );
+                            }
+                            postInvalidate();
+                            checkEndGame();
+
+                            return true;
+                        }
+
+                        return true;
+                    }
+                }
+            }
+        }
+        checkEndGame();
+
         return true;
     }
 
@@ -345,10 +445,12 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
             timerHandler.removeCallbacks(timerRunnable);
             askUsernameAndSaveScore();
 
-            dbHelper.saveSolitaireScore(username,game.score, elapsedTime);
+
 
             bestScore = dbHelper.getBestSolitaireScore();
-            //bestTime = dbHelper.getBestTime();
+            bestPlayer = dbHelper.getBestSolitairePlayer();
+
+            //bestTime = dbHelper.getBestS();
 
             Log.d("GAME", "🎉 Partie terminée !");
             Log.d("GAME", "Score : " + game.score);
@@ -359,20 +461,19 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
     private void askUsernameAndSaveScore() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("🏆 Nouveau Record !");
-        builder.setMessage("Score : " + game.score + " | Temps : " + getFormattedTime());
+        builder.setMessage("Score : " + game.score);
 
         final EditText input = new EditText(getContext());
-        input.setHint("Ton pseudo");
+        input.setHint("Entrez votre pseudo");
         builder.setView(input);
+        builder.setCancelable(false);
 
-        builder.setCancelable(false); // Oblige à répondre
         builder.setPositiveButton("Enregistrer", (dialog, which) -> {
-            username = input.getText().toString().trim();
+            String username = input.getText().toString().trim();
             if (username.isEmpty()) username = "Joueur Anonyme";
-
             dbHelper.saveSolitaireScore(username, game.score, elapsedTime);
             Toast.makeText(getContext(), "Bravo " + username + " !", Toast.LENGTH_SHORT).show();
-            postInvalidate(); // Pour rafraîchir l'affichage du Best Score
+            postInvalidate();
         });
 
         builder.show();
