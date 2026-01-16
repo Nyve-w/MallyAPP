@@ -5,13 +5,11 @@
     <item android:id="@+id/search"
         android:title="home"
         android:icon="@drawable/ic_baseline_search_24"
-       >
+        >
         </item>
     </group>
     <item android:id="@+id/settings"
-        android:title="Settings"
+        android:title="Paramètre"
         android:icon="@drawable/ic_baseline_settings_24"
-        >
-
-    </item>
+        ></item>
     </menu>

@@ -129,7 +129,13 @@ public class hangmanGame extends AppCompatActivity {
                 hangman_img.setImageResource(R.drawable.hangman_win_icon);
                 //Toast.makeText(this,hangmanScore,LENGTH_SHORT).show();
                 playSound(R.raw.gamewin_hangman);
+                askForNameAndSave();
                 putVideoWin();
+                // On vérifie si c'est un record AVANT de demander le nom
+                GameDatabaseHelper db = new GameDatabaseHelper(this);
+                if (score > db.getBestHangmanScore()) {
+                    askForNameAndSave();
+                }
                 //Toast.makeText(this, "You win", LENGTH_SHORT).show();
 
             }
@@ -186,7 +192,10 @@ public class hangmanGame extends AppCompatActivity {
         }
 
         // 4. Mettre à jour l'affichage de l'indice
-        hangman_indice.setText(monIndice)
+        hangman_indice.setText(monIndice);
+    }
+
+
 
 
     private void updateWordDisplay() {
@@ -331,5 +340,47 @@ public class hangmanGame extends AppCompatActivity {
             this.word = word;
             this.hint = hint;
         }
+    }
+
+    //BASE DE DONNEE LOCAL
+    @Override
+    public void onBackPressed() {
+        if (!gameOver) {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Quitter la partie ?")
+                    .setMessage("Ton score actuel sera perdu !")
+                    .setPositiveButton("Quitter", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Rester", null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+    //METHODE FOR GET USERNAME
+    private void askForNameAndSave() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("🏆 VICTOIRE !");
+        builder.setMessage("Entre ton pseudo pour le Hall of Fame :");
+
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setHint("Pseudo");
+        builder.setView(input);
+        builder.setCancelable(false); // On oblige l'utilisateur à valider
+
+        builder.setPositiveButton("Enregistrer", (dialog, which) -> {
+            String username = input.getText().toString().trim();
+            if (username.isEmpty()) username = "Inconnu";
+
+            // Sauvegarde dans la DB
+            GameDatabaseHelper db = new GameDatabaseHelper(this);
+            db.saveHangmanScore(username, score); // Utilisation de la nouvelle méthode
+
+            android.widget.Toast.makeText(this, "Score enregistré !", android.widget.Toast.LENGTH_SHORT).show();
+
+            // Une fois le nom entré, on lance la vidéo
+            putVideoWin();
+        });
+
+        builder.show();
     }
 }

@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_baseline_home_24" />
 
     <!-- Help -->
-    <item
+      <item
         android:id="@+id/nav_help"
         android:title="Help"
         android:icon="@drawable/ic_baseline_help_24" />

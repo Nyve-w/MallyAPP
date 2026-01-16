@@ -1,20 +1,26 @@
 package com.example.mally;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.content.ContentValues;
 
 public class GameDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "mally_game.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // ⚠️ J'ai passé la version à 2 pour forcer la mise à jour
 
-    private static final String TABLE_NAME = "best_scores";
+    // Table Solitaire
+    private static final String TABLE_SOLITAIRE = "table_solitaire";
+    // Table Hangman (Pendu)
+    private static final String TABLE_HANGMAN = "table_hangman";
+
+    // Colonnes communes
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USERNAME = "username"; // Le petit nouveau
     private static final String COLUMN_SCORE = "score";
-    private static final String COLUMN_TIME = "time";
+    private static final String COLUMN_TIME = "time"; // Uniquement pour solitaire
 
     public GameDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,94 +28,96 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+        // Création table Solitaire (Score + Temps + Nom)
+        String CREATE_SOLITAIRE = "CREATE TABLE " + TABLE_SOLITAIRE + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_USERNAME + " TEXT,"
                 + COLUMN_SCORE + " INTEGER,"
-                + COLUMN_TIME + " INTEGER"
-                + ")";
-        db.execSQL(CREATE_TABLE);
+                + COLUMN_TIME + " INTEGER" + ")";
+        db.execSQL(CREATE_SOLITAIRE);
+
+        // Création table Hangman (Score + Nom uniquement, le temps importe peu au pendu)
+        String CREATE_HANGMAN = "CREATE TABLE " + TABLE_HANGMAN + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_USERNAME + " TEXT,"
+                + COLUMN_SCORE + " INTEGER" + ")";
+        db.execSQL(CREATE_HANGMAN);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SOLITAIRE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HANGMAN);
+        // Si tu avais l'ancienne table unique, on la vire aussi
+        db.execSQL("DROP TABLE IF EXISTS best_scores");
         onCreate(db);
     }
 
-    // --- Méthode pour ajouter ou mettre à jour le meilleur score ---
-   /* public void saveScore(int score, long time) {
+    // --- SOLITAIRE : Sauvegarde ---
+    public void saveSolitaireScore(String name, int score, long time) {
         SQLiteDatabase db = this.getWritableDatabase();
+        // On supprime l'ancien record pour ne garder que le meilleur absolu
+        db.delete(TABLE_SOLITAIRE, null, null);
 
-        // Vérifier s'il y a déjà un score
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " LIMIT 1", null);
         ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, name);
         values.put(COLUMN_SCORE, score);
         values.put(COLUMN_TIME, time);
+        db.insert(TABLE_SOLITAIRE, null, values);
+        //db.close();
+    }
 
-        if(cursor.moveToFirst()) {
-            // Mettre à jour
-            db.update(TABLE_NAME, values, COLUMN_ID + "=?", new String[]{ String.valueOf(cursor.getInt(0)) });
-        } else {
-            // Insérer
-            db.insert(TABLE_NAME, null, values);
-        }
-        cursor.close();
-        db.close();
-    }*/
-    public void saveScore(int score, long time) {
+    // --- SOLITAIRE : Récupération ---
+    public int getBestSolitaireScore() {
+        return getIntData(TABLE_SOLITAIRE, COLUMN_SCORE);
+    }
+    public String getBestSolitairePlayer(){
+        return  getStringData(TABLE_SOLITAIRE,COLUMN_USERNAME);
+    }
+
+    // --- HANGMAN : Sauvegarde ---
+    public void saveHangmanScore(String name, int score) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // 🔍 récupérer le meilleur score existant
-        Cursor cursor = db.rawQuery(
-                "SELECT MAX(" + COLUMN_SCORE + ") FROM " + TABLE_NAME,
-                null
-        );
-
-        int bestScore = 0;
-        if (cursor.moveToFirst()) {
-            bestScore = cursor.getInt(0);
-        }
-        cursor.close();
-
-        // 🧠 si le nouveau score est meilleur → on sauvegarde
-        if (score > bestScore) {
+        // Logique : On vérifie si le nouveau score est meilleur que l'ancien
+        int currentBest = getBestHangmanScore();
+        if (score > currentBest) {
+            db.delete(TABLE_HANGMAN, null, null); // On garde seulement le champion
             ContentValues values = new ContentValues();
+            values.put(COLUMN_USERNAME, name);
             values.put(COLUMN_SCORE, score);
-            values.put(COLUMN_TIME, time);
-
-            db.delete(TABLE_NAME, null, null); // 🔥 on garde UNE SEULE ligne
-            db.insert(TABLE_NAME, null, values);
+            db.insert(TABLE_HANGMAN, null, values);
         }
-
-        db.close();
+        //db.close();
     }
 
-
-    // --- Méthode pour récupérer le meilleur score ---
-    public int getBestScore() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT MAX(" + COLUMN_SCORE + ") FROM " + TABLE_NAME, null);
-        int score = 0;
-        if (cursor.moveToFirst()) {
-            score = cursor.getInt(0);
-        }
-        cursor.close();
-        db.close();
-        return score;
+    // --- HANGMAN : Récupération ---
+    public int getBestHangmanScore() {
+        return getIntData(TABLE_HANGMAN, COLUMN_SCORE);
     }
 
+    public String getBestHangmanPlayer() {
+        return getStringData(TABLE_HANGMAN, COLUMN_USERNAME);
+    }
 
-    // --- Méthode pour récupérer le meilleur temps ---
-    public long getBestTime() {
+    // --- Utilitaires génériques ---
+    private int getIntData(String tableName, String column) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_TIME + " FROM " + TABLE_NAME + " LIMIT 1", null);
-        long time = Long.MAX_VALUE;
-        if(cursor.moveToFirst()) {
-            time = cursor.getLong(0);
-        }
+        Cursor cursor = db.rawQuery("SELECT MAX(" + column + ") FROM " + tableName, null);
+        int result = 0;
+        if (cursor.moveToFirst()) result = cursor.getInt(0);
         cursor.close();
-        db.close();
-        return time;
+        //db.close();
+        return result;
+    }
+
+    private String getStringData(String tableName, String column) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + column + " FROM " + tableName + " LIMIT 1", null);
+        String result = "---";
+        if (cursor.moveToFirst()) result = cursor.getString(0);
+        cursor.close();
+        //db.close();
+        return result;
     }
 }
