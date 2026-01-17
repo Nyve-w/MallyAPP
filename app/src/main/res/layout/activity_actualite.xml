@@ -17,16 +17,28 @@
         android:textSize="22sp"
         android:textStyle="bold" />
 
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:queryHint="Rechercher" />
+
     <Spinner
         android:id="@+id/spinnerCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerActualites"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerActualites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -36,12 +48,9 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/txtErreur"
+        android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Impossible de charger les actualités"
-        android:textColor="@android:color/holo_red_dark"
+        android:text="Aucune actualité disponible"
         android:visibility="gone"/>
-
-
 </android.widget.LinearLayout>
