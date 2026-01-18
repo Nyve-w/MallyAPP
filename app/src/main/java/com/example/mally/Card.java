@@ -23,13 +23,9 @@ public class Card implements Serializable {
         this(type, value, false);
     }
 
-    public CardType getType() {
-        return type;
-    }
+    public CardType getType() { return type; }
 
-    public int getValue() {
-        return value;
-    }
+    public int getValue() { return value; }
 
     public void setValue(int value) {
         if (value < 1 || value > 13)
@@ -37,17 +33,17 @@ public class Card implements Serializable {
         this.value = value;
     }
 
-    public boolean isReturned() {
-        return returned;
-    }
+    public boolean isReturned() { return returned; }
 
-    public void setReturned(boolean returned) {
-        this.returned = returned;
-    }
+    public void setReturned(boolean returned) { this.returned = returned; }
 
     public int getColor() {
         return (type == CardType.COEUR || type == CardType.CARREAU)
                 ? Color.RED : Color.BLACK;
+    }
+
+    public boolean canStackOn(Card other) {
+        return this.value + 1 == other.value;
     }
 
     public String getName() {

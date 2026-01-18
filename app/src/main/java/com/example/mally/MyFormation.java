@@ -55,10 +55,10 @@ public class MyFormation extends AppCompatActivity {
             Intent intent = null;
             switch(item.getItemId()){
                 case R.id.nav_home: intent = new Intent(this, MainActivity.class); break;
-                case R.id.nav_help: intent = new Intent(this, Help_Games.class); break;
-                case R.id.nav_user: intent = new Intent(this, UserGameParties.class); break;
-                case R.id.nav_game: intent = new Intent(this, MyGame.class); break;
-            }
+                //case R.id.nav_help: intent = new Intent(this, Help_Games.class); break;
+                //case R.id.nav_user: intent = new Intent(this, UserGameParties.class); break;
+                //case R.id.nav_game: return true;
+                }
             drawerLayout.closeDrawer(GravityCompat.START);
             if(intent != null) startActivity(intent);
             return true;
