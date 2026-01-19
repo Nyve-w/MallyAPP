@@ -92,11 +92,12 @@ public class MyGame extends AppCompatActivity {
         startActivity(new Intent(this, hangmanGame.class));
     }
     public void ouvrirJeu1(View v) {
-        new AlertDialog.Builder(this)
+        /*new AlertDialog.Builder(this)
                 .setTitle("Mally Information")
                 .setMessage("Ce jeu n'est pas disponible dans votre region")
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setPositiveButton("OK", null)
-                .show();
+                .show();*/
+        startActivity(new Intent(this, sodukoGame.class));
     }
 }
