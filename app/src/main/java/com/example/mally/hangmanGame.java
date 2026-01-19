@@ -3,8 +3,11 @@ package com.example.mally;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ public class hangmanGame extends AppCompatActivity {
     private MallyWord[] wordBank; // Notre banque de mots
     private java.util.Random random = new java.util.Random();
     private TextView hangman_indice;
+    private MediaPlayer backgroundMusic;
     Button btnReset;
     GridLayout grid;
     private TextView wordDisplay;
@@ -50,6 +54,7 @@ public class hangmanGame extends AppCompatActivity {
         createKeyboard();
         initWords();
         pickNewWord();
+        playSound(R.raw.game_music);
         updateUI(); // Crée cette petite méthode pour rafraîchir l'affichage
         updateWordDisplay();
         btnReset.setOnClickListener(v -> resetGame());
@@ -329,6 +334,7 @@ public class hangmanGame extends AppCompatActivity {
             child.setEnabled(true);
             child.setAlpha(1.0f);
         }
+        playSound(R.raw.game_music);
     }
 
     //CLASSE POUR LES MOTS
@@ -383,4 +389,25 @@ public class hangmanGame extends AppCompatActivity {
 
         builder.show();
     }
+    /*private void initAudio() {
+        Context context = getContext();
+
+        // 1. Configuration de la musique de fond
+        // Assurez-vous d'avoir un fichier 'game_music.mp3' dans res/raw
+        try {
+            // On vérifie si la ressource existe pour éviter le crash si vous n'avez pas mis le fichier
+            int musicResId = getResources().getIdentifier("game_music", "raw", context.getPackageName());
+            if (musicResId != 0) {
+                backgroundMusic = MediaPlayer.create(context, musicResId);
+                backgroundMusic.setLooping(true); // La musique tourne en boucle
+                backgroundMusic.setVolume(0.5f, 0.5f); // Volume à 50%
+                backgroundMusic.start(); // Lecture immédiate
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }*/
+
+
 }
