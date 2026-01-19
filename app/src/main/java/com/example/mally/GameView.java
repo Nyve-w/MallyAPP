@@ -340,6 +340,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
             if ( stackIndex > -1 ) {
                 Card selectedCard = game.returnedPioche.remove(game.returnedPioche.size() - 1);
                 game.stacks[stackIndex].add( selectedCard );
+                game.score += 10;
                 postInvalidate();
                 checkEndGame();
 
@@ -350,6 +351,7 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
             if ( deckIndex > -1 ) {
                 Card selectedCard = game.returnedPioche.remove( game.returnedPioche.size() - 1 );
                 game.decks[deckIndex].add( selectedCard );
+                game.score += 5;
                 postInvalidate();
                 checkEndGame();
 
@@ -371,10 +373,12 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
                         // Peut-on déplacer la carte du sommet de la deck vers une stack ?
                         if ( i == deck.size() - 1 ) {       // On vérifie de bien être sur le sommet
                             int stackIndex = game.canMoveCardToStack(currentCard);
+                            game.score += 10;
                             if (stackIndex > -1) {
                                 Card selectedCard = deck.remove(deck.size() - 1);
                                 if ( ! deck.isEmpty() ) deck.lastElement().setReturned(true);
                                 game.stacks[stackIndex].add( selectedCard );
+                                game.score += 5;
                                 postInvalidate();
                                 checkEndGame();
 
@@ -445,10 +449,13 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
             timerHandler.removeCallbacks(timerRunnable);
             askUsernameAndSaveScore();
 
+            if (game.score > bestScore) {
+                askUsernameAndSaveScore(); // On demande le nom seulement si c'est un record
+                bestScore = dbHelper.getBestSolitaireScore();
+                bestPlayer = dbHelper.getBestSolitairePlayer();
 
+            }
 
-            bestScore = dbHelper.getBestSolitaireScore();
-            bestPlayer = dbHelper.getBestSolitairePlayer();
 
             //bestTime = dbHelper.getBestS();
 
@@ -472,6 +479,9 @@ public class GameView extends View implements GestureDetector.OnGestureListener 
             String username = input.getText().toString().trim();
             if (username.isEmpty()) username = "Joueur Anonyme";
             dbHelper.saveSolitaireScore(username, game.score, elapsedTime);
+            // 🔥 TRÈS IMPORTANT : Mettre à jour les variables locales pour l'affichage
+            bestScore = game.score;
+            bestPlayer = username;
             Toast.makeText(getContext(), "Bravo " + username + " !", Toast.LENGTH_SHORT).show();
             postInvalidate();
         });

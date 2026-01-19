@@ -9,16 +9,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class GameDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "mally_game.db";
-    private static final int DATABASE_VERSION = 2; // ⚠️ J'ai passé la version à 2 pour forcer la mise à jour
+    private static final int DATABASE_VERSION = 3; // ⚠️ Passage à la version 3 pour créer la table Sudoku
 
-    // Table Solitaire
+    // Tables
     private static final String TABLE_SOLITAIRE = "table_solitaire";
-    // Table Hangman (Pendu)
     private static final String TABLE_HANGMAN = "table_hangman";
+    private static final String TABLE_SUDOKU = "table_sudoku"; // Nouvelle table
 
     // Colonnes communes
     private static final String COLUMN_ID = "id";
-    private static final String COLUMN_USERNAME = "username"; // Le petit nouveau
+    private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_SCORE = "score";
     private static final String COLUMN_TIME = "time"; // Uniquement pour solitaire
 
@@ -28,7 +28,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Création table Solitaire (Score + Temps + Nom)
+        // Table Solitaire
         String CREATE_SOLITAIRE = "CREATE TABLE " + TABLE_SOLITAIRE + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_USERNAME + " TEXT,"
@@ -36,78 +36,78 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_TIME + " INTEGER" + ")";
         db.execSQL(CREATE_SOLITAIRE);
 
-        // Création table Hangman (Score + Nom uniquement, le temps importe peu au pendu)
+        // Table Hangman
         String CREATE_HANGMAN = "CREATE TABLE " + TABLE_HANGMAN + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_USERNAME + " TEXT,"
                 + COLUMN_SCORE + " INTEGER" + ")";
         db.execSQL(CREATE_HANGMAN);
+
+        // Table Sudoku (Nouveau)
+        String CREATE_SUDOKU = "CREATE TABLE " + TABLE_SUDOKU + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_USERNAME + " TEXT,"
+                + COLUMN_SCORE + " INTEGER" + ")";
+        db.execSQL(CREATE_SUDOKU);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SOLITAIRE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HANGMAN);
-        // Si tu avais l'ancienne table unique, on la vire aussi
-        db.execSQL("DROP TABLE IF EXISTS best_scores");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUDOKU);
         onCreate(db);
     }
 
-    // --- SOLITAIRE : Sauvegarde ---
+    // --- SOLITAIRE ---
     public void saveSolitaireScore(String name, int score, long time) {
         SQLiteDatabase db = this.getWritableDatabase();
-        // On supprime l'ancien record pour ne garder que le meilleur absolu
         db.delete(TABLE_SOLITAIRE, null, null);
-
         ContentValues values = new ContentValues();
         values.put(COLUMN_USERNAME, name);
         values.put(COLUMN_SCORE, score);
         values.put(COLUMN_TIME, time);
         db.insert(TABLE_SOLITAIRE, null, values);
-        //db.close();
     }
+    public int getBestSolitaireScore() { return getIntData(TABLE_SOLITAIRE, COLUMN_SCORE); }
+    public String getBestSolitairePlayer(){ return getStringData(TABLE_SOLITAIRE, COLUMN_USERNAME); }
 
-    // --- SOLITAIRE : Récupération ---
-    public int getBestSolitaireScore() {
-        return getIntData(TABLE_SOLITAIRE, COLUMN_SCORE);
-    }
-    public String getBestSolitairePlayer(){
-        return  getStringData(TABLE_SOLITAIRE,COLUMN_USERNAME);
-    }
-
-    // --- HANGMAN : Sauvegarde ---
+    // --- HANGMAN ---
     public void saveHangmanScore(String name, int score) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        saveHighScore(TABLE_HANGMAN, name, score);
+    }
+    public int getBestHangmanScore() { return getIntData(TABLE_HANGMAN, COLUMN_SCORE); }
+    public String getBestHangmanPlayer() { return getStringData(TABLE_HANGMAN, COLUMN_USERNAME); }
 
-        // Logique : On vérifie si le nouveau score est meilleur que l'ancien
-        int currentBest = getBestHangmanScore();
+    // --- SUDOKU (Nouveau) ---
+    public void saveSudokuScore(String name, int score) {
+        saveHighScore(TABLE_SUDOKU, name, score);
+    }
+    public int getBestSudokuScore() { return getIntData(TABLE_SUDOKU, COLUMN_SCORE); }
+    public String getBestSudokuPlayer() { return getStringData(TABLE_SUDOKU, COLUMN_USERNAME); }
+
+    // --- Helpers ---
+
+    // Méthode générique pour sauvegarder si le score est meilleur
+    private void saveHighScore(String tableName, String name, int score) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int currentBest = getIntData(tableName, COLUMN_SCORE);
+
         if (score > currentBest) {
-            db.delete(TABLE_HANGMAN, null, null); // On garde seulement le champion
+            db.delete(tableName, null, null);
             ContentValues values = new ContentValues();
             values.put(COLUMN_USERNAME, name);
             values.put(COLUMN_SCORE, score);
-            db.insert(TABLE_HANGMAN, null, values);
+            db.insert(tableName, null, values);
         }
-        //db.close();
     }
 
-    // --- HANGMAN : Récupération ---
-    public int getBestHangmanScore() {
-        return getIntData(TABLE_HANGMAN, COLUMN_SCORE);
-    }
-
-    public String getBestHangmanPlayer() {
-        return getStringData(TABLE_HANGMAN, COLUMN_USERNAME);
-    }
-
-    // --- Utilitaires génériques ---
     private int getIntData(String tableName, String column) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + column + ") FROM " + tableName, null);
         int result = 0;
         if (cursor.moveToFirst()) result = cursor.getInt(0);
         cursor.close();
-        //db.close();
         return result;
     }
 
@@ -117,7 +117,6 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
         String result = "---";
         if (cursor.moveToFirst()) result = cursor.getString(0);
         cursor.close();
-        //db.close();
         return result;
     }
 }

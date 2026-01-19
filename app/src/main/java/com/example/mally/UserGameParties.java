@@ -16,6 +16,9 @@ public class UserGameParties extends AppCompatActivity {
 
     // Déclaration des vues pour le Hangman
     private TextView userHangman, scoreHangman, timeHangman;
+    // Déclaration des vues pour le sudoku
+    private TextView userSudoku,scoreSudoku;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,9 @@ public class UserGameParties extends AppCompatActivity {
         // Note: Dans ton XML, le 2ème "Meilleur Temps" a aussi l'ID textView5, ce qui est un bug.
         // Change l'ID dans le XML en "@+id/timeHangman" pour que ce soit propre.
         // timeHangman = findViewById(R.id.timeHangman);
+        //SUDOKU
+        userSudoku = findViewById(R.id.userSudoku);
+        scoreSudoku = findViewById(R.id.scoreSudoku);
 
         loadData();
     }
@@ -80,5 +86,11 @@ public class UserGameParties extends AppCompatActivity {
 
         // Pour le Hangman, on n'a pas mis de temps dans la DB, on peut masquer ou mettre N/A
         // timeHangman.setText("Temps : N/A");
+        //---Récupération Sudoku
+        String sudUser = db.getBestSudokuPlayer();
+        int sudScore =db.getBestSudokuScore();
+        //Affichage
+        userSudoku.setText("joeur"+sudUser);
+        scoreHangman.setText("Score"+sudScore);
     }
 }

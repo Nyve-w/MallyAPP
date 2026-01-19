@@ -27,7 +27,7 @@ public class MyGame extends AppCompatActivity {
         setContentView(R.layout.activity_my_game);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setVisibility(View.GONE); // cachée au départ
+        bottomNavigationView.setVisibility(View.GONE); // 🔴 cachée au départ
 
         initLoader();
         initBottomNavigation();
@@ -46,7 +46,7 @@ public class MyGame extends AppCompatActivity {
             lottieLoading.cancelAnimation();
             loaderContainer.setVisibility(View.GONE);
 
-            bottomNavigationView.setVisibility(View.VISIBLE); // affichée après
+            bottomNavigationView.setVisibility(View.VISIBLE); // ✅ affichée après
         }, LOADING_DURATION);
     }
 
@@ -58,8 +58,10 @@ public class MyGame extends AppCompatActivity {
             Intent intent = null;
 
             switch (item.getItemId()) {
-                case  R.id.nav_home:
-                        finish();
+                case R.id.nav_home:
+                    intent = new Intent(this, MainActivity.class);
+                    break;
+
                 case R.id.nav_help:
                     intent = new Intent(this, Help_Games.class);
                     break;
@@ -89,14 +91,13 @@ public class MyGame extends AppCompatActivity {
     public void ouvrirJeu3(View v) {
         startActivity(new Intent(this, hangmanGame.class));
     }
-
     public void ouvrirJeu1(View v) {
-        new AlertDialog.Builder(this)
+        /*new AlertDialog.Builder(this)
                 .setTitle("Mally Information")
                 .setMessage("Ce jeu n'est pas disponible dans votre region")
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setPositiveButton("OK", null)
-                .show();
-
+                .show();*/
+        startActivity(new Intent(this, sodukoGame.class));
     }
 }

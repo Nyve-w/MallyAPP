@@ -24,8 +24,8 @@
         <!-- 🔙 Retour -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
             android:src="@drawable/ic_baseline_back_24"
             android:background="@android:color/transparent"
             android:contentDescription="Retour" />
@@ -33,9 +33,9 @@
         <!-- ❓ Aide -->
         <ImageButton
             android:id="@+id/btnHelp"
-            android:layout_width="40dp"
-            android:layout_marginStart="85dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_marginStart="170dp"
+            android:layout_height="55dp"
             android:src="@drawable/ic_baseline_help_24"
             android:background="@android:color/transparent"
             android:contentDescription="Aide" />
