@@ -1,9 +1,12 @@
 package com.example.mally;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -22,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActualiteActivity extends AppCompatActivity {
-    TextView txtTitreActualites, txtMessage;
+    TextView txtTitreActualites, txtMessage, tvEmpty, tvError;
     Spinner spinnerCategories;
     RecyclerView recyclerActualites;
     ProgressBar progressBar;
@@ -30,6 +33,8 @@ public class ActualiteActivity extends AppCompatActivity {
     private String categorieActuelle="general";
     private String rechercheActuelle = null;
     SwipeRefreshLayout swipeRefresh;
+    Button btnRetry;
+    LinearLayout layoutError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,10 @@ public class ActualiteActivity extends AppCompatActivity {
         txtMessage=findViewById(R.id.txtMessage);
         searchView=findViewById(R.id.searchView);
         swipeRefresh=findViewById(R.id.swipeRefresh);
+        layoutError=findViewById(R.id.layoutError);
+        tvEmpty=findViewById(R.id.tvEmpty);
+        tvError=findViewById(R.id.tvError);
+        btnRetry=findViewById(R.id.btnRetry);
 
         swipeRefresh.setOnRefreshListener(() ->{
             chargerActualites(categorieActuelle, rechercheActuelle);
@@ -145,5 +154,29 @@ public class ActualiteActivity extends AppCompatActivity {
                afficherMessage("Choisissez une catégorie ou lancez une recherche");
             }
         });
+    }
+    private void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerActualites.setVisibility(View.GONE);
+        layoutError.setVisibility(View.GONE);
+        tvEmpty.setVisibility(View.GONE);
+    }
+    private void showError(String message) {
+        progressBar.setVisibility(View.GONE);
+        recyclerActualites.setVisibility(View.GONE);
+        layoutError.setVisibility(View.VISIBLE);
+        tvError.setText(message);
+    }
+    private void showEmpty() {
+        progressBar.setVisibility(View.GONE);
+        recyclerActualites.setVisibility(View.GONE);
+        layoutError.setVisibility(View.GONE);
+        tvEmpty.setVisibility(View.VISIBLE);
+    }
+    private void showContent() {
+        progressBar.setVisibility(View.GONE);
+        layoutError.setVisibility(View.GONE);
+        tvEmpty.setVisibility(View.GONE);
+        recyclerActualites.setVisibility(View.VISIBLE);
     }
 }

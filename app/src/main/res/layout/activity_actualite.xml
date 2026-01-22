@@ -17,17 +17,24 @@
         android:textSize="22sp"
         android:textStyle="bold" />
 
-    <SearchView
-        android:id="@+id/searchView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:queryHint="Rechercher" />
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/spinnerCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
+        <Spinner
+            android:id="@+id/spinnerCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="245sp"
+            android:queryHint="Rechercher" />
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -53,4 +60,35 @@
         android:layout_height="wrap_content"
         android:text="Aucune actualité disponible"
         android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/layoutError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Erreur de connexion" />
+
+        <Button
+            android:id="@+id/btnRetry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Réessayer" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="Il n'y a aucune actualité disponible" />
+
 </android.widget.LinearLayout>

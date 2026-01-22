@@ -27,7 +27,7 @@
             android:name=".Actualite"
             android:exported="false" />
         <activity
-            android:name=".ItemActualite"
+            android:name=".itemActualite"
             android:exported="false" />
         <activity
             android:name=".hangmanGame"
