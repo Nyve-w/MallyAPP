@@ -25,6 +25,7 @@ import android.widget.VideoView;
 import com.google.android.material.textfield.TextInputEditText;
 public class hangmanGame extends AppCompatActivity {
     //DECLARATION DES VARIABLES
+    private String currentUsername = "Joueur"; // Nom par défaut
     private MallyWord[] wordBank; // Notre banque de mots
     private java.util.Random random = new java.util.Random();
     private TextView hangman_indice;
@@ -54,6 +55,7 @@ public class hangmanGame extends AppCompatActivity {
         createKeyboard();
         initWords();
         pickNewWord();
+        askUsernameAtStart();
         playSound(R.raw.game_music);
         updateUI(); // Crée cette petite méthode pour rafraîchir l'affichage
         updateWordDisplay();
@@ -128,21 +130,20 @@ public class hangmanGame extends AppCompatActivity {
             //Toast.makeText(this, "🔥 Keep going!", LENGTH_SHORT).show();
             updateWordDisplay();
             updateUI();
+            // Dans checkLetter, quand isWordFound() est vrai :
             if (isWordFound()) {
                 gameOver = true;
                 disableAllButtons();
                 hangman_img.setImageResource(R.drawable.hangman_win_icon);
-                //Toast.makeText(this,hangmanScore,LENGTH_SHORT).show();
                 playSound(R.raw.gamewin_hangman);
-                askForNameAndSave();
-                putVideoWin();
-                // On vérifie si c'est un record AVANT de demander le nom
-                GameDatabaseHelper db = new GameDatabaseHelper(this);
-                if (score > db.getBestHangmanScore()) {
-                    askForNameAndSave();
-                }
-                //Toast.makeText(this, "You win", LENGTH_SHORT).show();
 
+                // SAUVEGARDE AUTOMATIQUE
+                GameDatabaseHelper db = new GameDatabaseHelper(this);
+                // On enregistre avec le nom récupéré au début
+                db.saveHangmanScore(currentUsername, score);
+
+                putVideoWin();
+                Toast.makeText(this, "Victoire ! Score enregistré pour " + currentUsername, Toast.LENGTH_SHORT).show();
             }
         } else {
             lives--;
@@ -255,7 +256,12 @@ public class hangmanGame extends AppCompatActivity {
 
     //1.EN CAS DE VICTOIRE
           public void putVideoWin() {
+        container.setAlpha(0f);
         container.setVisibility(View.VISIBLE);
+        container.animate()
+                      .alpha(1f)
+                      .setDuration(600)
+                      .setListener(null);
         Uri uri = Uri.parse("android.resource://"
                 + getPackageName() + "/" + R.raw.video_winners_game);
 
@@ -267,9 +273,15 @@ public class hangmanGame extends AppCompatActivity {
     }
     //2.EN CAS DE DEFAITE
           public void putVideoLose() {
+        container.setAlpha(0f);
         container.setVisibility(View.VISIBLE);
+        container.animate()
+                      .alpha(1f)
+                      .setDuration(600)
+                      .setListener(null);
         Uri uri = Uri.parse("android.resource://"
                 + getPackageName() + "/" + R.raw.hangman_lose);
+
 
         videoView.setVideoURI(uri);
         videoView.start();
@@ -362,7 +374,47 @@ public class hangmanGame extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+    private void askUsernameAtStart() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Bienvenue !");
+        builder.setMessage("Entre ton pseudo pour cette session :");
+
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setHint("Pseudo");
+        builder.setView(input);
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("C'est parti !", (dialog, which) -> {
+            String name = input.getText().toString().trim();
+            if (!name.isEmpty()) {
+                currentUsername = name;
+            }
+            // On affiche le nom dans l'UI si vous avez un TextView pour ça
+            Toast.makeText(this, "Bonne chance " + currentUsername + " !", Toast.LENGTH_SHORT).show();
+        });
+
+        builder.show();
+    }
     //METHODE FOR GET USERNAME
+    /*private void initAudio() {
+        Context context = getContext();
+
+        // 1. Configuration de la musique de fond
+        // Assurez-vous d'avoir un fichier 'game_music.mp3' dans res/raw
+        try {
+            // On vérifie si la ressource existe pour éviter le crash si vous n'avez pas mis le fichier
+            int musicResId = getResources().getIdentifier("game_music", "raw", context.getPackageName());
+            if (musicResId != 0) {
+                backgroundMusic = MediaPlayer.create(context, musicResId);
+                backgroundMusic.setLooping(true); // La musique tourne en boucle
+                backgroundMusic.setVolume(0.5f, 0.5f); // Volume à 50%
+                backgroundMusic.start(); // Lecture immédiate
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     private void askForNameAndSave() {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setTitle("🏆 VICTOIRE !");
@@ -389,25 +441,7 @@ public class hangmanGame extends AppCompatActivity {
 
         builder.show();
     }
-    /*private void initAudio() {
-        Context context = getContext();
-
-        // 1. Configuration de la musique de fond
-        // Assurez-vous d'avoir un fichier 'game_music.mp3' dans res/raw
-        try {
-            // On vérifie si la ressource existe pour éviter le crash si vous n'avez pas mis le fichier
-            int musicResId = getResources().getIdentifier("game_music", "raw", context.getPackageName());
-            if (musicResId != 0) {
-                backgroundMusic = MediaPlayer.create(context, musicResId);
-                backgroundMusic.setLooping(true); // La musique tourne en boucle
-                backgroundMusic.setVolume(0.5f, 0.5f); // Volume à 50%
-                backgroundMusic.start(); // Lecture immédiate
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }*/
+    */
 
 
 }

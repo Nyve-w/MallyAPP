@@ -1,96 +1,124 @@
 package com.example.mally;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class UserGameParties extends AppCompatActivity {
 
-    // Déclaration des vues pour le Solitaire
-    private TextView userSolitaire, scoreSolitaire, timeSolitaire;
+    // 1. Déclaration des variables liées aux IDs du XML
+    private RecyclerView recyclerScores;
+    private TextView textCurrentGameTitle;
+    private Button btnSolitaire, btnHangman, btnSudoku;
 
-    // Déclaration des vues pour le Hangman
-    private TextView userHangman, scoreHangman, timeHangman;
-    // Déclaration des vues pour le sudoku
-    private TextView userSudoku,scoreSudoku;
-
+    // Outil pour faire les requêtes internet
+    private final OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_game_parties);
 
-        // Toolbar
+        // 2. Liaison (Binding)
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // --- Liaison des composants (Binding) ---
+        recyclerScores = findViewById(R.id.recyclerScores);
+        textCurrentGameTitle = findViewById(R.id.textCurrentGameTitle);
+        btnSolitaire = findViewById(R.id.btnSolitaire);
+        btnHangman = findViewById(R.id.btnHangman);
+        btnSudoku = findViewById(R.id.btnSudoku);
 
-        // Solitaire
-        userSolitaire = findViewById(R.id.userSolitaire);
-        scoreSolitaire = findViewById(R.id.scoreSolitaire);
-        timeSolitaire = findViewById(R.id.textView5); // ID du temps Solitaire dans ton XML
+        // Configuration de la liste (Indispensable pour un RecyclerView)
+        recyclerScores.setLayoutManager(new LinearLayoutManager(this));
 
-        // Hangman
-        userHangman = findViewById(R.id.userHangman);
-        scoreHangman = findViewById(R.id.scoreHangman);
-        // Note: Dans ton XML, le 2ème "Meilleur Temps" a aussi l'ID textView5, ce qui est un bug.
-        // Change l'ID dans le XML en "@+id/timeHangman" pour que ce soit propre.
-        // timeHangman = findViewById(R.id.timeHangman);
-        //SUDOKU
-        userSudoku = findViewById(R.id.userSudoku);
-        scoreSudoku = findViewById(R.id.scoreSudoku);
+        // 3. Gestion des Clics
+        btnSolitaire.setOnClickListener(v -> loadGameData("table_solitaire", "Solitaire"));
+        btnHangman.setOnClickListener(v -> loadGameData("table_hangman", "Pendu"));
+        btnSudoku.setOnClickListener(v -> loadGameData("table_sudoku", "Sudoku"));
 
-        loadData();
+        // Charger le Solitaire par défaut au lancement
+        loadGameData("table_solitaire", "Solitaire");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // On recharge les données si on revient sur cette page après avoir joué
-        loadData();
-    }
+    // Fonction principale qui télécharge et affiche
+    private void loadGameData(String tableName, String gameTitle) {
+        // Mise à jour du titre visuel
+        textCurrentGameTitle.setText("Chargement " + gameTitle + "...");
 
-    private void loadData() {
-        GameDatabaseHelper db = new GameDatabaseHelper(this);
+        // ATTENTION : Choisis ton URL selon ton cas (voir explications infra partie 1)
+        // Cas A (Émulateur) : "http://10.0.2.2/mally_game/get_leaderboard.php?table=" + tableName
+        // Cas B (Téléphone USB + adb reverse) : "http://localhost/mally_game/get_leaderboard.php?table=" + tableName
 
-        // --- Récupération Solitaire ---
-        String solUser = db.getBestSolitairePlayer();
-        int solScore = db.getBestSolitaireScore();
-        //long solTimeMs = db.getBestSolitaireTime();
+        String url = "http://localhost/mally_game/get_leaderboard.php?table=" + tableName;
 
-        /*Formatage du temps
-        int seconds = (int) (solTimeMs / 1000);
-        int minutes = seconds / 60;
-        seconds = seconds % 60;
-        String solTimeStr = String.format("%02d:%02d", minutes, seconds);*/
+        Request request = new Request.Builder().url(url).build();
 
-        // Affichage Solitaire
-        userSolitaire.setText("Joueur : " + solUser);
-        scoreSolitaire.setText("Score : " + solScore);
-        //timeSolitaire.setText("Temps : " + solTimeStr);
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // En cas d'erreur (pas d'internet, serveur éteint)
+                runOnUiThread(() -> {
+                    textCurrentGameTitle.setText("Erreur de connexion");
+                    Toast.makeText(UserGameParties.this, "Serveur inaccessible", Toast.LENGTH_SHORT).show();
+                });
+            }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonResponse = response.body().string();
 
-        // --- Récupération Hangman ---
-        String hangUser = db.getBestHangmanPlayer();
-        int hangScore = db.getBestHangmanScore();
+                    // On prépare une liste vide
+                    List<PlayerScore> scoreList = new ArrayList<>();
 
-        // Affichage Hangman
-        userHangman.setText("Joueur : " + hangUser);
-        scoreHangman.setText("Score : " + hangScore);
+                    try {
+                        // On transforme le texte JSON reçu en tableau utilisable
+                        JSONArray jsonArray = new JSONArray(jsonResponse);
 
-        // Pour le Hangman, on n'a pas mis de temps dans la DB, on peut masquer ou mettre N/A
-        // timeHangman.setText("Temps : N/A");
-        //---Récupération Sudoku
-        String sudUser = db.getBestSudokuPlayer();
-        int sudScore =db.getBestSudokuScore();
-        //Affichage
-        userSudoku.setText("joeur"+sudUser);
-        scoreHangman.setText("Score"+sudScore);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            // On crée l'objet PlayerScore
+                            scoreList.add(new PlayerScore(
+                                    obj.getString("username"),
+                                    obj.getInt("score")
+                            ));
+                        }
+
+                        // IMPORTANT : On revient sur le fil principal pour toucher à l'écran
+                        runOnUiThread(() -> {
+                            textCurrentGameTitle.setText("Meilleurs scores : " + gameTitle);
+                            // On donne la liste à l'Adapter (le moteur d'affichage)
+                            LeaderboardAdapter adapter = new LeaderboardAdapter(scoreList);
+                            recyclerScores.setAdapter(adapter);
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }
