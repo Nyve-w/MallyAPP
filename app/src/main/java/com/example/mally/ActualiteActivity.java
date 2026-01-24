@@ -81,6 +81,9 @@ public class ActualiteActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterSpinner= new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
         spinnerCategories.setAdapter(adapterSpinner);
 
+        btnRetry.setOnClickListener(v -> loadActualites());
+        loadActualites();
+
         recyclerActualites.setLayoutManager(new LinearLayoutManager(this));
 
         spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -140,43 +143,48 @@ public class ActualiteActivity extends AppCompatActivity {
                 swipeRefresh.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
 
-                if (response.isSuccessful()&&response.body()!=null&&response.body().getArticles()!=null&&!response.body().getArticles().isEmpty()) {
+                if (response.isSuccessful() && response.body() != null && response.body().getArticles() != null && !response.body().getArticles().isEmpty()) {
                     afficherMessage("Aucun résultat trouvé");
-                } else{
+                } else {
                     afficherListe();
                     recyclerActualites.setAdapter(new ActualiteAdapter(response.body().getArticles()));
                 }
             }
+
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
                 swipeRefresh.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
-               afficherMessage("Choisissez une catégorie ou lancez une recherche");
+                afficherMessage("Choisissez une catégorie ou lancez une recherche");
             }
-        });
-    }
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-        recyclerActualites.setVisibility(View.GONE);
-        layoutError.setVisibility(View.GONE);
-        tvEmpty.setVisibility(View.GONE);
-    }
-    private void showError(String message) {
-        progressBar.setVisibility(View.GONE);
-        recyclerActualites.setVisibility(View.GONE);
-        layoutError.setVisibility(View.VISIBLE);
-        tvError.setText(message);
-    }
-    private void showEmpty() {
-        progressBar.setVisibility(View.GONE);
-        recyclerActualites.setVisibility(View.GONE);
-        layoutError.setVisibility(View.GONE);
-        tvEmpty.setVisibility(View.VISIBLE);
-    }
-    private void showContent() {
-        progressBar.setVisibility(View.GONE);
-        layoutError.setVisibility(View.GONE);
-        tvEmpty.setVisibility(View.GONE);
-        recyclerActualites.setVisibility(View.VISIBLE);
+
+            private void showLoading() {
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerActualites.setVisibility(View.GONE);
+                layoutError.setVisibility(View.GONE);
+                tvEmpty.setVisibility(View.GONE);
+            }
+
+            private void showError(String message) {
+                progressBar.setVisibility(View.GONE);
+                recyclerActualites.setVisibility(View.GONE);
+                layoutError.setVisibility(View.VISIBLE);
+                tvError.setText(message);
+            }
+
+            private void showEmpty() {
+                progressBar.setVisibility(View.GONE);
+                recyclerActualites.setVisibility(View.GONE);
+                layoutError.setVisibility(View.GONE);
+                tvEmpty.setVisibility(View.VISIBLE);
+            }
+
+            private void showContent() {
+                progressBar.setVisibility(View.GONE);
+                layoutError.setVisibility(View.GONE);
+                tvEmpty.setVisibility(View.GONE);
+                recyclerActualites.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }
