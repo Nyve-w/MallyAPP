@@ -3,34 +3,20 @@
     package="com.example.mally">
     <!-- PERMISSION INTERNET -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
     <application
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mally">
         <activity
-            android:name=".DetailActualiteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".itemActualite"
-            android:exported="false" />
-        <activity
-            android:name=".ActualiteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ActualiteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Actualite"
-            android:exported="false" />
-        <activity
-            android:name=".itemActualite"
-            android:exported="false" />
-        <activity
-            android:name=".hangmanGame"
+            android:name=".sodukoGame"
             android:exported="false" />
         <activity
             android:name=".nosformations"
@@ -57,6 +43,9 @@
         <activity
             android:name=".MyFormation"
             android:exported="false" />
+        <activity
+            android:name=".hangmanGame"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

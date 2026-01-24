@@ -37,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
         // Toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v ->
-                Toast.makeText(this, "Fini de coder ça Monsieur", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Mally 4In1", Toast.LENGTH_SHORT).show()
         );
 
         // Clics
         setupClick(formation, MyFormation.class);
-        setupClick(information, MyInformation.class);
+        setupClick(information, ActualiteActivity.class);
         setupClick(jeu, MyGame.class);
         setupClick(musique, MyMusique.class);
     }

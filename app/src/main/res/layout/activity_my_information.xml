@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_color">
 
-    <!-- Contenu principal avec toolbar + swipe + recycler -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,10 +24,12 @@
                 app:title="Information"
                 app:titleTextColor="@android:color/white"
                 app:navigationIcon="@drawable/ic_baseline_menu_24"
+                android:visibility="visible"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- SwipeRefresh + FrameLayout pour loader + RecyclerView -->
+        <!-- SwipeRefresh -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
@@ -39,14 +40,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <!-- RecyclerView pour le feed -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/infoRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"/>
+                    android:clipToPadding="false"
+                    android:paddingBottom="12dp"/>
 
-                <!-- Lottie loader -->
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/lottieLoading"
                     android:layout_width="220dp"
@@ -55,16 +55,18 @@
                     app:lottie_fileName="loader.json"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"/>
+
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- Navigation drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/bottom_view"/>
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/main_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -1,0 +1,135 @@
+PROGRAMMATION;L'art d'écrire du code
+CAFE;Le carburant du développeur
+JAVA;Un langage de programmation robuste
+ANDROID;Le système mobile de Google
+KOTLIN;Le remplaçant moderne de Java
+STUDIO;L'endroit où on développe les apps
+LAYOUT;Fichier XML qui définit l'interface
+Gemini;Mon meilleur ami du moment
+AVION;Moyen de transport aérien
+BALON;Objet rond pour jouer au foot
+CHAT;Petit félin domestique
+CHIEN;Le meilleur ami de l'homme
+ECOLE;Lieu où l'on apprend
+FORET;Espace rempli d'arbres
+HIVER;Saison la plus froide
+LIVRE;On le lit pour s'évader
+LAPIN;Animal avec de longues oreilles;
+MAISON;Lieu où l'on habite
+MANGER;Action de se nourrir
+METRO;Train souterrain urbain
+MERE;La femme qui t'a donné la vie
+NEIGE;Poudre blanche qui tombe en hiver
+OISEAU;Animal qui possède des ailes
+PAIN;Base de la nourriture française
+PLAGE;Bord de mer avec du sable
+POMME;Fruit rouge ou vert croquant
+PORTE;On l'ouvre pour entrer;POULE
+Oiseau qui pond des oeufs
+RADIO;Appareil pour écouter la musique
+ROBOT;Machine intelligente
+SOLEIL;Étoile qui nous éclaire
+TABLE;Meuble pour manger
+TERRE;La planète où nous vivons
+TRAIN;Transport sur des rails
+VACHE;Animal qui produit du lait
+VELO;Véhicule à deux roues;VERRE
+Récipient pour boire
+ZOO;Lieu où l'on voit des animaux
+FLEUR;Une rose ou une tulipe
+LUNE;Astre visible la nuit
+FORME;Carré ou triangle
+JEUNE;Le contraire de vieux
+GRAND;Le contraire de petit
+BLEU;La couleur du ciel
+ROUGE;La couleur du sang
+JAUNE;La couleur du citron
+NOIR;La couleur de la nuit
+PETIT;Le contraire de grand
+FORTE;Personne avec beaucoup de muscles
+VILLE;Espace urbain habité;ROUTE
+Chemin pour les voitures;JARDIN
+Espace vert devant la maison
+HERBE;Végétation verte du sol
+TIGRE;Grand félin rayé
+SABLE;On en trouve dans le désert
+LAPIN;Il adore les carottes
+AFFICHE;Papier collé au mur
+AMPOULE;Objet qui produit de la lumière
+BANANE;Fruit jaune courbé;BATEAU
+Transport sur l'eau;BOUGIE
+Objet en cire pour s'éclairer
+BUREAU;Meuble pour travailler
+CACHOT;Prison sombre
+CADEAU;Objet que l'on offre
+CAHIER;Support pour écrire
+CAMION;Gros véhicule de transport
+CANARD;Oiseau qui fait coin-coin
+CARTON;Matière d'emballage
+CHAINE;Série de maillons liés
+CHAISE;Meuble pour s'asseoir
+CASQUE;Protection pour la tête
+CIMENT;Matière pour construire
+CIREUR;Celui qui nettoie les chaussures
+CLAVIER;Touches pour écrire
+COCHON;Animal rose de la ferme
+COLLIER;Bijou autour du cou
+CRAYON;Outil pour dessiner
+CUISINE;Pièce pour préparer les repas
+DANGER;Situation risquée
+DESSIN;Image faite à la main
+DICTEE;Exercice d'orthographe
+DOCTEUR;Personne qui soigne
+DOUCHE;Lieu pour se laver
+ECLAIR;Phénomène lumineux d'orage
+ENFANT;Jeune être humain;EPONGE
+Objet qui absorbe l'eau;ESCALIER
+Série de marches;ETOILE;Point brillant dans le ciel
+FAMILLE;Parents et enfants
+FENETRE;Ouverture dans un mur
+FLEUVE;Grand cours d'eau;
+FRAISE;Petit fruit rouge d'été;
+GARE;Lieu où s'arrêtent les trains
+GUITARE;Instrument à cordes
+JOURNAL;Publication d'actualités
+LANGUE;Organe du goût
+LUNETTES;Aide pour mieux voir
+MARCHE;Action de se déplacer à pied
+MIROIR;Surface qui réfléchit l'image
+MONTAGNE;Grande élévation de terre
+MUSIQUE;Art des sons;NUAGE
+Vapeur d'eau dans le ciel
+ORANGE;Fruit riche en vitamine C
+PAPIER;Support pour l'écriture
+PILOTE;Celui qui conduit un avion
+VALISE;Sac pour les voyages
+AQUARIUM;Bassin pour poissons
+ARCHITECTE;Concepteur de bâtiments
+ASCENSEUR;Cabine pour monter les étages
+AUTOROUTE;Route rapide à plusieurs voies
+AVALANCHE;Chute de neige brutale;BIBLIOTHEQUE
+Lieu rempli de livres;BOUSSOLE;Instrument d'orientation
+BROUETTE;Petit véhicule de jardinier;CALCULATRICE
+Machine pour les maths;CHAMPIGNON
+Végétal sans fleurs ni feuilles;CHIMPANZE
+Grand singe intelligent;CHRONOMETRE
+Appareil pour mesurer le temps;
+COQUELICOT;Fleur rouge des champs
+CROCODILE;Grand reptile aquatique
+DINOSAURE;Animal préhistorique
+ECHARPE;Tissu autour du cou
+ELECTRICITE;Énergie pour les lampes
+ELEPHANT;Plus gros animal terrestre
+ENCYCLOPEDIE;Ouvrage de connaissances
+EQUILIBRE;État de stabilité
+EXPLORATEUR;Voyageur de terres inconnues
+EXTINCTEUR;Objet pour éteindre un feu
+FORTERESSE;Château très protégé
+GIRAFE;Animal au très long cou
+HELICOPTERE;Appareil à hélices
+HIPPOCAMPE;Petit cheval de mer
+HORLOGE;Appareil pour donner l'heure
+IMPRIMANTE;Machine pour éditer du texte
+INFORMATIQUE;Science des ordinateurs
+INTERNET;Réseau mondial connecté;KANGOUROU;Animal qui saute avec une poche;LABYRINTHE;Chemin complexe pour sortir;LOCOMOTIVE;Machine qui tire le train;MAGICIEN;Personne qui fait des tours;MALADIE;Altération de la santé;MICROSCOPE;Outil pour voir le minuscule;ORDINATEUR;Appareil électronique de bureau;PARAPLUIE;Protection contre la pluie;PERROQUET;Oiseau qui parle;PHARAON;Ancien roi d'Egypte;PHOTOGRAPHIE;Image capturée par un appareil;PYRAMIDE;Tombeau égyptien pointu;REFRIGERATEUR;Appareil pour garder au frais;SQUELETTE;Ensemble des os du corps;TELEPHONE;Appareil de communication;TELEVISION;Écran pour regarder des films;THERMOMETRE;Mesure la température;TROMBONE;Petit outil pour attacher les papiers;VETEMENT;Ce que l'on porte sur soi;XYLOPHONE;Instrument de musique percuté
+BANANE;Fruit jaune courbé AQUARIUM;Bassin pour poissons CHAT;Petit félin domestique ARCHITECTE;Concepteur de bâtiments AVION;Moyen de transport aérien ASCENSEUR;Cabine pour monter les étages BALON;Objet rond pour jouer au foot AUTOROUTE;Route rapide à plusieurs voies CHIEN;Le meilleur ami de l'homme AVALANCHE;Chute de neige brutale ECOLE;Lieu où l'on apprend BIBLIOTHEQUE;Lieu rempli de livres FORET;Espace rempli d'arbres BOUSSOLE;Instrument d'orientation FRUIT;Pomme ou banane par exemple BROUETTE;Petit véhicule de jardinier HIVER;Saison la plus froide CALCULATRICE;Machine pour les maths LIVRE;On le lit pour s'évader CHAMPIGNON;Végétal sans fleurs ni feuilles LAPIN;Animal avec de longues oreilles CHIMPANZE;Grand singe intelligent MAISON;Lieu où l'on habite CHRONOMETRE;Appareil pour mesurer le temps MANGER;Action de se nourrir COQUELICOT;Fleur rouge des champs METRO;Train souterrain urbain CROCODILE;Grand reptile aquatique MERE;La femme qui t'a donné la vie DINOSAURE;Animal préhistorique NEIGE;Poudre blanche qui tombe en hiver ECHARPE;Tissu autour du cou OISEAU;Animal qui possède des ailes ELECTRICITE;Énergie pour les lampes PAIN;Base de la nourriture française ELEPHANT;Plus gros animal terrestre PLAGE;Bord de mer avec du sable ENCYCLOPEDIE;Ouvrage de connaissances POMME;Fruit rouge ou vert croquant EQUILIBRE;État de stabilité PORTE;On l'ouvre pour entrer EXPLORATEUR;Voyageur de terres inconnues POULE;Oiseau qui pond des oeufs EXTINCTEUR;Objet pour éteindre un feu RADIO;Appareil pour écouter la musique FORTERESSE;Château très protégé ROBOT;Machine intelligente GIRAFE;Animal au très long cou SOLEIL;Étoile qui nous éclaire HELICOPTERE;Appareil à hélices TABLE;Meuble pour manger HIPPOCAMPE;Petit cheval de mer TERRE;La planète où nous vivons HORLOGE;Appareil pour donner l'heure TRAIN;Transport sur des rails IMPRIMANTE;Machine pour éditer du texte VACHE;Animal qui produit du lait INFORMATIQUE;Science des ordinateurs VELO;Véhicule à deux roues INTERNET;Réseau mondial connecté VERRE;Récipient pour boire KANGOUROU;Animal qui saute avec une poche ZOO;Lieu où l'on voit des animaux LABYRINTHE;Chemin complexe pour sortir FLEUR;Une rose ou une tulipe LOCOMOTIVE;Machine qui tire le train LUNE;Astre visible la nuit MAGICIEN;Personne qui fait des tours FORME;Carré ou triangle MALADIE;Altération de la santé JEUNE;Le contraire de vieux MICROSCOPE;Outil pour voir le minuscule GRAND;Le contraire de petit ORDINATEUR;Appareil électronique de bureau BLEU;La couleur du ciel PARAPLUIE;Protection contre la pluie ROUGE;La couleur du sang PERROQUET;Oiseau qui parle JAUNE;La couleur du citron PHARAON;Ancien roi d'Egypte NOIR;La couleur de la nuit PHOTOGRAPHIE;Image capturée par un appareil PETIT;Le contraire de grand PYRAMIDE;Tombeau égyptien pointu FORTE;Personne avec beaucoup de muscles REFRIGERATEUR;Appareil pour garder au frais VILLE;Espace urbain habité SQUELETTE;Ensemble des os du corps ROUTE;Chemin pour les voitures TELEPHONE;Appareil de communication JARDIN;Espace vert devant la maison TELEVISION;Écran pour regarder des films HERBE;Végétation verte du sol THERMOMETRE;Mesure la température TIGRE;Grand félin rayé TROMBONE;Petit outil pour attacher les papiers SABLE;On en trouve dans le désert VETEMENT;Ce que l'on porte sur soi SAVA;Réponse à comment vas-tu XYLOPHONE;Instrument de musique percuté AFFICHE;Papier collé au mur AMPOULE;Objet qui produit de la lumière BATEAU;Transport sur l'eau BOUGIE;Objet en cire pour s'éclairer BUREAU;Meuble pour travailler CACHOT;Prison sombre CADEAU;Objet que l'on offre CAHIER;Support pour écrire CAMION;Gros véhicule de transport CANARD;Oiseau qui fait coin-coin CARTON;Matière d'emballage CHAINE;Série de maillons liés CHAISE;Meuble pour s'asseoir CASQUE;Protection pour la tête CIMENT;Matière pour construire CIREUR;Celui qui nettoie les chaussures CLAVIER;Touches pour écrire COCHON;Animal rose de la ferme COLLIER;Bijou autour du cou CRAYON;Outil pour dessiner CUISINE;Pièce pour préparer les repas DANGER;Situation risquée DESSIN;Image faite à la main DICTEE;Exercice d'orthographe DOCTEUR;Personne qui soigne DOUCHE;Lieu pour se laver ECLAIR;Phénomène lumineux d'orage ENFANT;Jeune être humain EPONGE;Objet qui absorbe l'eau ESCALIER;Série de marches ETOILE;Point brillant dans le ciel FAMILLE;Parents et enfants FENETRE;Ouverture dans un mur FLEUVE;Grand cours d'eau FRAISE;Petit fruit rouge d'été GARE;Lieu où s'arrêtent les trains GUITARE;Instrument à cordes JOURNAL;Publication d'actualités LANGUE;Organe du goût LUNETTES;Aide pour mieux voir MARCHE;Action de se déplacer à pied MIROIR;Surface qui réfléchit l'image MONTAGNE;Grande élévation de terre MUSIQUE;Art des sons NUAGE;Vapeur d'eau dans le ciel ORANGE;Fruit riche en vitamine C PAPIER;Support pour l'écriture PILOTE;Celui qui conduit un avion VALISE;Sac pour les voyages CITRON;Fruit acide et jaune SANG;Liquide rouge du corps AVOCAT;Fruit vert ou métier juridique POMPIER;Il éteint les incendies PIZZA;Plat italien rond SUDOKU;Jeu de chiffres japonais TENNIS;Sport avec une raquette VALSE;Une danse à trois temps

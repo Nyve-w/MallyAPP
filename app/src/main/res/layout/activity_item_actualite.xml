@@ -6,15 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp"
-    tools:context=".itemActualite">
-
-    <ImageView
-        android:id="@+id/imgArticle"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/txtTitre"
@@ -32,8 +24,7 @@
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="#888888"/>
+        android:textSize="14sp" />
 
 
 </android.widget.LinearLayout>
