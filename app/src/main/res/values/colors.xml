@@ -13,6 +13,10 @@
     <color name="teal_700">#018786</color>
     <color name="black">#000000</color>
     <color name="white">#EADEDE</color>
+    <color name="btn_color">#673AB7</color>
+    <color name="defaultBtnColor">#9575CD</color>
+    <color name="activeBtnColor">#512DA8</color>
+
 
     <!-- Couleurs spécifiques au jeu Solitaire -->
     <color name="backSolitaire">#FF4CAF50</color> <!-- fond plateau -->

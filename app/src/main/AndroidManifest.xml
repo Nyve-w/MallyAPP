@@ -44,6 +44,9 @@
         <activity
             android:name=".MyFormation"
             android:exported="false" />
+        <service
+            android:name=".MusicService"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
