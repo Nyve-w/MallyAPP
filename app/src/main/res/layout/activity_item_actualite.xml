@@ -12,19 +12,13 @@
         android:id="@+id/txtTitre"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Titre de l'actualité"/>
 
     <TextView
         android:id="@+id/txtDescription"
-        android:layout_width="wrap_content"
+        android:text="Descrption de l'actualité"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/txtDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
-
-
 </android.widget.LinearLayout>

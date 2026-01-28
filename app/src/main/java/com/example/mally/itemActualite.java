@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mally.R;
+
 public class itemActualite extends AppCompatActivity {
 
     @Override

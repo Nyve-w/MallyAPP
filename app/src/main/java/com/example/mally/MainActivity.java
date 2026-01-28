@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.mally.R;
 
 public class MainActivity extends AppCompatActivity {
 
