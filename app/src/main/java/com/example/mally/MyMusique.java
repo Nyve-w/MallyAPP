@@ -1,6 +1,7 @@
 package com.example.mally;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,7 +43,7 @@ public class MyMusique extends AppCompatActivity {
     MusicAdapter adapter;
 
     // ===== UI =====
-    LinearLayout miniPlayer, categoryContainer;
+    LinearLayout miniPlayer, categoryContainer, artistContainer; // <-- artistContainer ajouté
     TextView miniTitle, miniArtist;
     Button miniPrev, miniPlay, miniNext;
     SeekBar miniSeekBar;
@@ -56,6 +57,7 @@ public class MyMusique extends AppCompatActivity {
 
     Handler handler = new Handler();
     Button activeCategoryButton = null;
+    Button activeArtistButton = null; // <-- pour artiste
 
     private static final int LOADER_DURATION = 2000;
 
@@ -74,6 +76,7 @@ public class MyMusique extends AppCompatActivity {
         miniSeekBar = findViewById(R.id.miniSeek);
 
         categoryContainer = findViewById(R.id.categoryContainer);
+        artistContainer = findViewById(R.id.artistContainer); // <-- trouve le conteneur artiste
 
         RecyclerView recyclerView = findViewById(R.id.recyclerMusic);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -118,11 +121,17 @@ public class MyMusique extends AppCompatActivity {
         adapter = new MusicAdapter(this, filtered);
         recyclerView.setAdapter(adapter);
 
-        // ===== CATEGORIES =====
+        // ===== CATÉGORIES (BOUTONS ARRONDIS) =====
         addCategoryButton("Tous");
         Set<String> categories = new HashSet<>();
         for (Music m : all) categories.add(m.category);
         for (String cat : categories) addCategoryButton(cat);
+
+        // ===== ARTISTES (BOUTONS ARRONDIS) =====
+        addArtistButton("Tous");
+        Set<String> artists = new HashSet<>();
+        for (Music m : all) artists.add(m.artist);
+        for (String artist : artists) addArtistButton(artist);
 
         // ===== MINI PLAYER =====
         miniNext.setOnClickListener(v -> playNext());
@@ -140,20 +149,9 @@ public class MyMusique extends AppCompatActivity {
         }, LOADER_DURATION);
     }
 
+    // ===== CATEGORY BUTTONS =====
     private void addCategoryButton(String category) {
-        Button btn = new Button(this);
-        btn.setText(category);
-        btn.setAllCaps(false);
-        btn.setPadding(32, 16, 32, 16);
-
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-        params.setMargins(24, 0, 24, 0); // espace entre boutons
-        btn.setLayoutParams(params);
-
+        Button btn = createRoundedButton(category);
         btn.setOnClickListener(v -> {
             if (activeCategoryButton != null)
                 activeCategoryButton.setBackgroundColor(getColor(R.color.defaultBtnColor));
@@ -169,14 +167,61 @@ public class MyMusique extends AppCompatActivity {
             currentPos = -1;
             adapter.notifyDataSetChanged();
         });
-
-        btn.setBackgroundColor(getColor(R.color.defaultBtnColor));
         categoryContainer.addView(btn);
 
         if (category.equals("Tous")) {
             activeCategoryButton = btn;
             btn.setBackgroundColor(getColor(R.color.activeBtnColor));
         }
+    }
+
+    // ===== ARTIST BUTTONS =====
+    private void addArtistButton(String artist) {
+        Button btn = createRoundedButton(artist);
+        btn.setOnClickListener(v -> {
+            if (activeArtistButton != null)
+                activeArtistButton.setBackgroundColor(getColor(R.color.defaultBtnColor));
+
+            btn.setBackgroundColor(getColor(R.color.activeBtnColor));
+            activeArtistButton = btn;
+
+            filtered.clear();
+            if (artist.equals("Tous")) filtered.addAll(all);
+            else for (Music m : all)
+                if (m.artist.equals(artist)) filtered.add(m);
+
+            currentPos = -1;
+            adapter.notifyDataSetChanged();
+        });
+        artistContainer.addView(btn);
+
+        if (artist.equals("Tous")) {
+            activeArtistButton = btn;
+            btn.setBackgroundColor(getColor(R.color.activeBtnColor));
+        }
+    }
+
+    // ===== CREATE ROUNDED BUTTON =====
+    private Button createRoundedButton(String text) {
+        Button btn = new Button(this);
+        btn.setText(text);
+        btn.setAllCaps(false);
+        btn.setPadding(32, 16, 32, 16);
+
+        // Bordure arrondie
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(getColor(R.color.defaultBtnColor));
+        gd.setCornerRadius(50); // <-- arrondi
+        btn.setBackground(gd);
+
+        LinearLayout.LayoutParams params =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+        params.setMargins(24, 0, 24, 0);
+        btn.setLayoutParams(params);
+        return btn;
     }
 
     // ================== DATA ==================
@@ -278,5 +323,16 @@ public class MyMusique extends AppCompatActivity {
         int prev = currentPos - 1;
         if (prev < 0) prev = filtered.size() - 1;
         playMusicFromAdapter(filtered.get(prev), prev);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+            currentPos = -1;
+        }
     }
 }

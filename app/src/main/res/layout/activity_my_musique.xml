@@ -32,7 +32,7 @@
                     app:menu="@menu/main_menu"/>
             </com.google.android.material.appbar.AppBarLayout>
 
-            <!-- CATÉGORIES -->
+            <!-- FILTRE CATÉGORIES -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,14 +47,28 @@
                     android:gravity="center_vertical"/>
             </HorizontalScrollView>
 
+            <!-- FILTRE ARTISTES -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/artistContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"/>
+            </HorizontalScrollView>
+
             <!-- LISTE MUSIQUES -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerMusic"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_margin="12dp"
-                android:background="@drawable/btn_color"/>
+                android:layout_margin="12dp"/>
         </LinearLayout>
 
         <!-- MINI PLAYER -->
