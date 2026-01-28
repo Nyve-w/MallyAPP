@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,12 @@ public class UserGameParties extends AppCompatActivity {
     // 1. Déclaration des variables liées aux IDs du XML
     private RecyclerView recyclerScores;
     private TextView textCurrentGameTitle;
+    private TextView userSolitaire, scoreSolitaire;
     private Button btnSolitaire, btnHangman, btnSudoku;
+    private View globalRankingLayout;
+    private MaterialToolbar toolbar;
+    private ImageButton btnCloseGlobal;
+    private TextView userSudoku, scoreSudoku, userHangman, scoreHangman;
 
     // Outil pour faire les requêtes internet
     private final OkHttpClient client = new OkHttpClient();
@@ -39,52 +45,98 @@ public class UserGameParties extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_game_parties);
-
-        // 2. Liaison (Binding)
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
-        recyclerScores = findViewById(R.id.recyclerScores);
-        textCurrentGameTitle = findViewById(R.id.textCurrentGameTitle);
-        btnSolitaire = findViewById(R.id.btnSolitaire);
-        btnHangman = findViewById(R.id.btnHangman);
-        btnSudoku = findViewById(R.id.btnSudoku);
+        // 2. Appel methode de Liaison (Binding)
+        matchIds();
+        // 3. Gestion des Clics
+        gestionClick();
+        //4.Chargement des données locaux
+        refreshLocalDisplay();
 
         // Configuration de la liste (Indispensable pour un RecyclerView)
         recyclerScores.setLayoutManager(new LinearLayoutManager(this));
 
-        // 3. Gestion des Clics
-        btnSolitaire.setOnClickListener(v -> loadGameData("table_solitaire", "Solitaire"));
-        btnHangman.setOnClickListener(v -> loadGameData("table_hangman", "Pendu"));
-        btnSudoku.setOnClickListener(v -> loadGameData("table_sudoku", "Sudoku"));
 
-        // Charger le Solitaire par défaut au lancement
-        loadGameData("table_solitaire", "Solitaire");
+    }
+    private void matchIds(){
+        recyclerScores = findViewById(R.id.recyclerScores);
+        textCurrentGameTitle = findViewById(R.id.textCurrentGameTitle);
+        userSudoku = findViewById(R.id.userSudoku);
+        scoreSudoku = findViewById(R.id.scoreSudoku);
+        userHangman = findViewById(R.id.userHangman);
+        scoreHangman = findViewById(R.id.scoreHangman);
+        globalRankingLayout = findViewById(R.id.globalRankingLayout);
+        userSolitaire = findViewById(R.id.userSolitaire);
+        scoreSolitaire = findViewById(R.id.scoreSolitaire);
+        toolbar = findViewById(R.id.toolbar);
+        btnSudoku=findViewById(R.id.btnGlobalSudoku);
+        btnHangman=findViewById(R.id.btnGlobalHangman);
+        btnSolitaire=findViewById(R.id.btnGlobalSolitaire);
+        btnCloseGlobal=findViewById(R.id.btnCloseGlobal);
+    }
+    private void gestionClick(){
+        btnSudoku.setOnClickListener(v -> openGlobalRanking("table_sudoku", "Sudoku"));
+        btnHangman.setOnClickListener(v -> openGlobalRanking("table_hangman", "Pendu"));
+        btnSolitaire.setOnClickListener(v -> openGlobalRanking("table_solitaire", "Solitaire"));
+        btnCloseGlobal.setOnClickListener(v -> closeGlobalRanking());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+    private void refreshLocalDisplay() {
+        GameDatabaseHelper db = new GameDatabaseHelper(this);
+        userSudoku.setText("Joueur: " + db.getBestSudokuPlayer());
+        scoreSudoku.setText("Record: " + db.getBestSudokuScore());
+        userHangman.setText("Joueur: " + db.getBestHangmanPlayer());
+        scoreHangman.setText("Record: " + db.getBestHangmanScore());
+        userSolitaire.setText("Joueur: " + db.getBestSolitairePlayer());
+        scoreSolitaire.setText("Record: " + db.getBestSolitaireScore());
     }
 
+    private void openGlobalRanking(String table, String title) {
+        globalRankingLayout.setVisibility(View.VISIBLE);
+        // Animation de haut vers le bas
+        globalRankingLayout.setTranslationY(-getResources().getDisplayMetrics().heightPixels);
+        globalRankingLayout.animate().translationY(0).setDuration(500).start();
+
+        loadGameData(table, title); // Ton ancienne méthode OkHttp
+    }
+
+    private void closeGlobalRanking() {
+        globalRankingLayout.animate()
+                .translationY(-globalRankingLayout.getHeight())
+                .setDuration(400)
+                .withEndAction(() -> globalRankingLayout.setVisibility(View.GONE))
+                .start();
+    }
     // Fonction principale qui télécharge et affiche
     private void loadGameData(String tableName, String gameTitle) {
-        // Mise à jour du titre visuel
-        textCurrentGameTitle.setText("Chargement " + gameTitle + "...");
+        // Mise en place du titre visuel
+        textCurrentGameTitle.setText("Chargement..." + gameTitle + "...");
 
-        // ATTENTION : Choisis ton URL selon ton cas (voir explications infra partie 1)
+        //MISE EN PLACE DE LA COMMUNICATION AVEC LA BASE DE DONNEE DISTANTE
+
+        //1.L'URL
         // Cas A (Émulateur) : "http://10.0.2.2/mally_game/get_leaderboard.php?table=" + tableName
         // Cas B (Téléphone USB + adb reverse) : "http://localhost/mally_game/get_leaderboard.php?table=" + tableName
+        //String url = "http://localhost/mally_game/get_leaderboard.php?table=" + tableName;
+        // Cas C (infinityfree):
+        //String url = "http://mallygame.rf.gd/get_all_scores.php?table=" + tableName;
+        String url ="http://mallygame.atwebpages.com/get_leaderboard.php?table=" + tableName;
 
-        String url = "http://localhost/mally_game/get_leaderboard.php?table=" + tableName;
-
-        Request request = new Request.Builder().url(url).build();
-
+        //2.DECLARATION DE LA REQUETTE
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)") // AJOUTE CECI
+                .build();
         client.newCall(request).enqueue(new Callback() {
+            // A.En cas d'erreur (pas d'internet, serveur éteint)
             @Override
             public void onFailure(Call call, IOException e) {
-                // En cas d'erreur (pas d'internet, serveur éteint)
+
                 runOnUiThread(() -> {
                     textCurrentGameTitle.setText("Erreur de connexion");
                     Toast.makeText(UserGameParties.this, "Serveur inaccessible", Toast.LENGTH_SHORT).show();
                 });
             }
-
+            //B. En cas de succes
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
@@ -120,5 +172,13 @@ public class UserGameParties extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        if (globalRankingLayout.getVisibility() == View.VISIBLE) {
+            closeGlobalRanking(); // On utilise enfin ta méthode close !
+        } else {
+            super.onBackPressed();
+        }
     }
 }

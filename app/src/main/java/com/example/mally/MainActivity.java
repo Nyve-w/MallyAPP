@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Clics
         setupClick(formation, MyFormation.class);
-        setupClick(information, ActualiteActivity.class);
+        setupClick(information,MyInformation.class);
         setupClick(jeu, MyGame.class);
         setupClick(musique, MyMusique.class);
     }

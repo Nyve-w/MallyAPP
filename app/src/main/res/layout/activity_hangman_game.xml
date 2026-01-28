@@ -39,101 +39,60 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+
+
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="220dp"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/hangman_image"
-                    android:layout_width="130dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="25dp"
+                    android:padding="10dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/hangman_icon" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:gravity="center"
                     android:background="@drawable/btn_color"
                     android:padding="12dp">
 
-                    <!-- Champ texte -->
                     <TextView
                         android:id="@+id/hangman_inputText"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="12dp"
-                        android:text="💡 Indice : Je sui un jeu qui tue"
+                        android:text="💡 Indice..."
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
-                 <com.google.android.material.textfield.TextInputLayout
-
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-
-                    app:boxBackgroundColor="@color/white_soft"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/hangman_inputText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="1"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/btnSearch"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-
-                        android:src="@drawable/ic_baseline_search_24"
-                        android:tint="@android:color/white" />
-
-
-                </LinearLayout>
-
+                        android:textSize="16sp"
+                        android:textStyle="italic"/>
                 </LinearLayout>
             </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/wordDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="5dp"
-            android:padding="16dp"
-            android:textColor="@color/hangman_black"
-            android:textSize="24sp">
-        </TextView>
+        </com.google.android.material.card.MaterialCardView>      <TextView
+        android:id="@+id/wordDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:letterSpacing="0.1"
+        android:textColor="@color/hangman_black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        tools:text="_ _ A _ _ O" />
 
 
         <com.google.android.material.card.MaterialCardView
@@ -167,6 +126,38 @@
         </androidx.cardview.widget.CardView>
 
     </android.widget.LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        >
+
+        <!-- 🔙 Retour -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_marginStart="190dp"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:src="@drawable/ic_baseline_back_24"
+            android:background="@android:color/transparent"
+            android:contentDescription="Retour" />
+
+        <!-- ❓ Aide -->
+        <ImageButton
+            android:id="@+id/btnHelp"
+            android:layout_width="50dp"
+
+            android:layout_height="55dp"
+            android:src="@drawable/ic_baseline_help_24"
+            android:background="@android:color/transparent"
+            android:contentDescription="Aide" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/winOverlay"
         android:layout_width="match_parent"
@@ -223,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="24dp"
-                    android:text="REJOUER"
+                    android:text="CONTINUER"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -232,5 +223,10 @@
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
     </FrameLayout>
+
+
+
+
 </FrameLayout>

@@ -7,6 +7,7 @@ import static java.security.AccessController.getContext;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -52,16 +53,41 @@ public class hangmanGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hangman_game);
         mathcId();
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        ImageButton btnHelp = findViewById(R.id.btnHelp);
         createKeyboard();
         initWords();
         pickNewWord();
         askUsernameAtStart();
-        playSound(R.raw.game_music);
+        startBackgroundMusic();
         updateUI(); // Crée cette petite méthode pour rafraîchir l'affichage
         updateWordDisplay();
         btnReset.setOnClickListener(v -> resetGame());
+        btnBack.setOnClickListener(v -> finish());
+        btnHelp.setOnClickListener(v -> {
+            String rules = "JEU 2. PENDU (HANGMAN)\n\n" +
+                    "Objectif du jeu :\n" +
+                    "- Deviner le mot caché avant que le pendu ne soit complet.\n\n" +
+                    "Comment jouer :\n" +
+                    "1. Un mot ou une phrase est choisi aléatoirement.\n" +
+                    "2. Le mot est affiché avec des tirets à la place des lettres.\n" +
+                    "3. Tu dois proposer une lettre à chaque tour.\n" +
+                    "4. Si la lettre est dans le mot, elle apparaît à toutes ses positions.\n" +
+                    "5. Si la lettre n’est pas dans le mot, une partie du pendu est dessinée.\n" +
+                    "6. Tu as un nombre limité d’erreurs possibles avant que le pendu soit complet.\n\n" +
+                    "Gagner :\n" +
+                    "- Deviner toutes les lettres du mot avant que le pendu ne soit complet.\n\n" +
+                    "Conseils :\n" +
+                    "- Commence par les voyelles, elles apparaissent souvent dans les mots.\n" +
+                    "- Essaie des lettres fréquentes comme 'S', 'T', 'R', 'N'.\n" +
+                    "- Évite de répéter les lettres déjà proposées.";
 
-
+            new AlertDialog.Builder(this)
+                    .setTitle("Aide")
+                    .setMessage(rules)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
 
     }
     //1.MATCHING ID
@@ -179,6 +205,46 @@ public class hangmanGame extends AppCompatActivity {
             e.printStackTrace();
             // Fallback au cas où le fichier a un souci
             wordBank = new MallyWord[]{new MallyWord("ERREUR", "Fichier introuvable")};
+        }
+    }
+    private void startBackgroundMusic() {
+        // Si le player n'existe pas, on le crée
+        if (backgroundMusic == null) {
+            backgroundMusic = MediaPlayer.create(this, R.raw.game_music);
+            backgroundMusic.setLooping(true); // IMPORTANT : Pour que la musique tourne en boucle
+            backgroundMusic.setVolume(0.5f, 0.5f); // Volume à 50% pour ne pas couvrir les bruitages
+        }
+
+        // Si la musique ne joue pas, on la lance
+        if (!backgroundMusic.isPlaying()) {
+            backgroundMusic.start();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Quand l'appli revient au premier plan, on relance la musique
+        if (backgroundMusic != null && !backgroundMusic.isPlaying()) {
+            backgroundMusic.start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Quand l'appli passe en arrière-plan (ou écran éteint), on met pause
+        if (backgroundMusic != null && backgroundMusic.isPlaying()) {
+            backgroundMusic.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Quand l'activité est détruite, on libère la mémoire
+        if (backgroundMusic != null) {
+            backgroundMusic.release();
+            backgroundMusic = null;
         }
     }
     //3.CHOIX DU MOT
@@ -346,7 +412,7 @@ public class hangmanGame extends AppCompatActivity {
             child.setEnabled(true);
             child.setAlpha(1.0f);
         }
-        playSound(R.raw.game_music);
+
     }
 
     //CLASSE POUR LES MOTS

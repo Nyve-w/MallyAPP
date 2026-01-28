@@ -6,7 +6,7 @@
         <solid android:color="#FFFFFF"/>
 
         <!-- Coins arrondis -->
-        <corners android:radius="20dp"/>
+        <corners android:radius="15dp"/>
 
         <!-- Bordure -->
         <stroke

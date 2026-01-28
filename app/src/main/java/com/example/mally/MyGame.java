@@ -62,10 +62,6 @@ public class MyGame extends AppCompatActivity {
                     intent = new Intent(this, MainActivity.class);
                     break;
 
-                case R.id.nav_help:
-                    intent = new Intent(this, Help_Games.class);
-                    break;
-
                 case R.id.nav_user:
                     intent = new Intent(this, UserGameParties.class);
                     break;

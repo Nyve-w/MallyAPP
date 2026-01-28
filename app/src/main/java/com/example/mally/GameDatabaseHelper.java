@@ -68,6 +68,8 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SCORE, score);
         values.put(COLUMN_TIME, time);
         db.insert(TABLE_SOLITAIRE, null, values);
+        // Ajoute cette ligne :
+        uploadScore(TABLE_SOLITAIRE, name, score);
     }
     public int getBestSolitaireScore() { return getIntData(TABLE_SOLITAIRE, COLUMN_SCORE); }
     public String getBestSolitairePlayer(){ return getStringData(TABLE_SOLITAIRE, COLUMN_USERNAME); }
@@ -99,6 +101,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
             values.put(COLUMN_USERNAME, name);
             values.put(COLUMN_SCORE, score);
             db.insert(tableName, null, values);
+            uploadScore(tableName, name, score);
         }
     }
 
@@ -118,5 +121,27 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) result = cursor.getString(0);
         cursor.close();
         return result;
+    }
+    private void uploadScore(String table, String username, int score) {
+        okhttp3.OkHttpClient client = new okhttp3.OkHttpClient();
+        okhttp3.RequestBody formBody = new okhttp3.FormBody.Builder()
+                .add("table", table)
+                .add("username", username)
+                .add("score", String.valueOf(score))
+                .build();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url("http://mallygame.atwebpages.com/upload_score.php")
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, java.io.IOException e) { e.printStackTrace(); }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws java.io.IOException {
+                response.close();
+            }
+        });
     }
 }

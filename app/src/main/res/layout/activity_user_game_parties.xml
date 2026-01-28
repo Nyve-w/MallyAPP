@@ -1,61 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#6200EE"
-        app:title="Classement Global"
-        app:titleTextColor="#FFFFFF"
-        app:navigationIcon="@drawable/ic_baseline_back_24"/>
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp">
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/btn_color"
+            app:title="Mes Records &amp; Classement"
+            app:navigationIcon="@drawable/ic_baseline_back_24" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
-            android:id="@+id/btnSolitaire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Solitaire"
-            android:layout_marginEnd="5dp"/>
-
-        <Button
-            android:id="@+id/btnHangman"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pendu"
-            android:layout_marginEnd="5dp"/>
-
-        <Button
-            android:id="@+id/btnSudoku"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sudoku"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textCurrentGameTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Meilleurs scores : Solitaire"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:textStyle="bold"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerScores"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:fillViewport="true"
+        android:background="@drawable/dg_game"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/btn_color">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="JEU SUDOKU"
+                        android:textSize="28dp"
+                        android:textColor="#fff"
+                        android:textStyle="bold" />
+                    <TextView android:id="@+id/userSudoku" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:background="@drawable/textview_color" android:padding="15dp" android:text="Nom Utilisateur" android:textColor="#A08CFF" />
+
+                    <TextView
+                        android:id="@+id/scoreSudoku"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/textview_color"
+                        android:padding="15dp"
+                        android:text="Meilleur Score"
+                        android:textColor="#A08CFF" />
+
+                    <Button
+                        android:id="@+id/btnGlobalSudoku"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/classement"
+                        android:backgroundTint="#6C5CE7"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/btn_color">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="JEU SOLITAIRE" android:textSize="28dp" android:textColor="#fff" android:textStyle="bold" />
+                    <TextView android:id="@+id/userSolitaire" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:background="@drawable/textview_color" android:padding="15dp" android:text="Nom Utilisateur" android:textColor="#A08CFF" />
+                    <TextView android:id="@+id/scoreSolitaire" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:background="@drawable/textview_color" android:padding="15dp" android:text="Meilleur Score" android:textColor="#A08CFF" />
+                    <Button android:id="@+id/btnGlobalSolitaire" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/classement" android:backgroundTint="#03DAC5"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/btn_color">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="JEU HANGMAN" android:textSize="28dp" android:textColor="#fff" android:textStyle="bold" />
+                    <TextView android:id="@+id/userHangman" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:background="@drawable/textview_color" android:padding="15dp" android:text="Nom Utilisateur" android:textColor="#A08CFF" />
+                    <TextView android:id="@+id/scoreHangman" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:background="@drawable/textview_color" android:padding="15dp" android:text="Meilleur Score" android:textColor="#A08CFF" />
+                    <Button
+                        android:id="@+id/btnGlobalHangman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/classement"
+                        android:backgroundTint="#6C5CE7"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/globalRankingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#F9FAFB"
+        android:elevation="35dp"
+        android:visibility="gone"
+        android:paddingTop="20dp">
+
+        <ImageButton
+            android:id="@+id/btnCloseGlobal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <TextView
+            android:id="@+id/textCurrentGameTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="#6200EE"
+            android:textStyle="bold"
+            android:text="Chargement Monde..."/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerScores"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
