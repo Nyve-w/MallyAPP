@@ -72,10 +72,11 @@
         </LinearLayout>
 
         <!-- MINI PLAYER -->
+        <!-- MINI PLAYER -->
         <LinearLayout
             android:id="@+id/miniPlayer"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="150dp"
             android:layout_gravity="bottom"
             android:orientation="vertical"
             android:background="@drawable/mini_player_bg"
@@ -89,6 +90,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
+                <!-- TEXTE MUSIQUE -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -120,6 +122,7 @@
                         android:ellipsize="end"/>
                 </LinearLayout>
 
+                <!-- CONTROLES LECTURE -->
                 <Button
                     android:id="@+id/miniPrev"
                     android:layout_width="40dp"
@@ -151,11 +154,56 @@
                     android:background="@drawable/btn_color"/>
             </LinearLayout>
 
+            <!-- BOUTONS SUPPLEMENTAIRES SHUFFLE / REPEAT / CREATE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/btnShuffle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="🔀"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:background="@drawable/btn_color"
+                    android:textColor="@color/defaultBtnColor"/>
+
+                <Button
+                    android:id="@+id/btnRepeat"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="🔁"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:background="@drawable/btn_color"
+                    android:textColor="@color/defaultBtnColor"
+                    android:layout_marginStart="15dp"/>
+
+                <Button
+                    android:id="@+id/btnCreatePlaylist"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="➕"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:background="@drawable/btn_color"
+                    android:textColor="@color/defaultBtnColor"
+                    android:layout_marginStart="15dp"/>
+            </LinearLayout>
+
             <SeekBar
                 android:id="@+id/miniSeek"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progressTint="@color/purple_500"/>
+                android:progressTint="@color/purple_500"
+                android:layout_marginTop="5dp"/>
         </LinearLayout>
 
         <!-- SPLASH / LOADER -->

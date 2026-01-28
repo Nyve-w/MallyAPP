@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -29,21 +30,26 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class MyMusique extends AppCompatActivity {
 
-    // ===== MEDIA =====
+    // ===== PLAYER =====
     public static MediaPlayer mediaPlayer;
     public static int currentPos = -1;
 
     // ===== DATA =====
     List<Music> all = new ArrayList<>();
-    List<Music> filtered = new ArrayList<>();
+    List<Music> displayed = new ArrayList<>();
+
+    String activeCategory = "Tous";
+    String activeArtist = "Tous";
+
     MusicAdapter adapter;
 
     // ===== UI =====
-    LinearLayout miniPlayer, categoryContainer, artistContainer; // <-- artistContainer ajouté
+    LinearLayout miniPlayer, categoryContainer, artistContainer;
     TextView miniTitle, miniArtist;
     Button miniPrev, miniPlay, miniNext;
     SeekBar miniSeekBar;
@@ -56,10 +62,13 @@ public class MyMusique extends AppCompatActivity {
     Toolbar toolbar;
 
     Handler handler = new Handler();
-    Button activeCategoryButton = null;
-    Button activeArtistButton = null; // <-- pour artiste
 
-    private static final int LOADER_DURATION = 2000;
+    // ===== OPTIONS =====
+    boolean isShuffle = false;
+    boolean isRepeatOne = false;
+    Random random = new Random();
+
+    private static final int LOADER_DURATION = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +85,7 @@ public class MyMusique extends AppCompatActivity {
         miniSeekBar = findViewById(R.id.miniSeek);
 
         categoryContainer = findViewById(R.id.categoryContainer);
-        artistContainer = findViewById(R.id.artistContainer); // <-- trouve le conteneur artiste
+        artistContainer = findViewById(R.id.artistContainer);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerMusic);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,27 +97,21 @@ public class MyMusique extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         toolbar = findViewById(R.id.toolbar);
 
-        // ===== TOOLBAR SETUP =====
+        // ===== TOOLBAR =====
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> {
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
                 drawerLayout.closeDrawer(GravityCompat.START);
-            } else {
+            else
                 drawerLayout.openDrawer(GravityCompat.START);
-            }
         });
 
-        // ===== NAVIGATION DRAWER =====
         navigationView.setNavigationItemSelectedListener(item -> {
-            Intent intent = null;
             if (item.getItemId() == R.id.nav_home) {
-                intent = new Intent(MyMusique.this, MainActivity.class);
-            }
-            drawerLayout.closeDrawer(GravityCompat.START);
-            if (intent != null) {
-                startActivity(intent);
+                startActivity(new Intent(this, MainActivity.class));
                 finish();
             }
+            drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
 
@@ -116,115 +119,126 @@ public class MyMusique extends AppCompatActivity {
         showLoader();
         loadJson();
 
-        // ===== ADAPTER =====
-        filtered.addAll(all);
-        adapter = new MusicAdapter(this, filtered);
+        displayed.addAll(all);
+        adapter = new MusicAdapter(this, displayed);
         recyclerView.setAdapter(adapter);
 
-        // ===== CATÉGORIES (BOUTONS ARRONDIS) =====
-        addCategoryButton("Tous");
-        Set<String> categories = new HashSet<>();
-        for (Music m : all) categories.add(m.category);
-        for (String cat : categories) addCategoryButton(cat);
-
-        // ===== ARTISTES (BOUTONS ARRONDIS) =====
-        addArtistButton("Tous");
-        Set<String> artists = new HashSet<>();
-        for (Music m : all) artists.add(m.artist);
-        for (String artist : artists) addArtistButton(artist);
+        buildCategoryButtons();
+        buildArtistButtons();
 
         // ===== MINI PLAYER =====
         miniNext.setOnClickListener(v -> playNext());
         miniPrev.setOnClickListener(v -> playPrevious());
+
         initSeekBar();
     }
 
-    // ================== UI ==================
+    // ================= LOADER =================
     private void showLoader() {
-        loaderContainer.setVisibility(FrameLayout.VISIBLE);
+        loaderContainer.setVisibility(View.VISIBLE);
         lottieLoading.playAnimation();
+
         handler.postDelayed(() -> {
-            lottieLoading.cancelAnimation();
-            loaderContainer.setVisibility(FrameLayout.GONE);
+            loaderContainer.setVisibility(View.GONE);
+
+            findViewById(R.id.recyclerMusic).setVisibility(View.VISIBLE);
+            categoryContainer.setVisibility(View.VISIBLE);
+            artistContainer.setVisibility(View.VISIBLE);
+
+            if (currentPos != -1) miniPlayer.setVisibility(View.VISIBLE);
         }, LOADER_DURATION);
     }
 
-    // ===== CATEGORY BUTTONS =====
-    private void addCategoryButton(String category) {
-        Button btn = createRoundedButton(category);
-        btn.setOnClickListener(v -> {
-            if (activeCategoryButton != null)
-                activeCategoryButton.setBackgroundColor(getColor(R.color.defaultBtnColor));
-
-            btn.setBackgroundColor(getColor(R.color.activeBtnColor));
-            activeCategoryButton = btn;
-
-            filtered.clear();
-            if (category.equals("Tous")) filtered.addAll(all);
-            else for (Music m : all)
-                if (m.category.equals(category)) filtered.add(m);
-
-            currentPos = -1;
-            adapter.notifyDataSetChanged();
+    // ================= FILTERS =================
+    private void buildCategoryButtons() {
+        addRoundedButton(categoryContainer, "Tous", true, t -> {
+            activeCategory = t;
+            applyFilters();
         });
-        categoryContainer.addView(btn);
 
-        if (category.equals("Tous")) {
-            activeCategoryButton = btn;
-            btn.setBackgroundColor(getColor(R.color.activeBtnColor));
-        }
+        Set<String> set = new HashSet<>();
+        for (Music m : all) set.add(m.category);
+
+        for (String c : set)
+            addRoundedButton(categoryContainer, c, false, t -> {
+                activeCategory = t;
+                applyFilters();
+            });
     }
 
-    // ===== ARTIST BUTTONS =====
-    private void addArtistButton(String artist) {
-        Button btn = createRoundedButton(artist);
-        btn.setOnClickListener(v -> {
-            if (activeArtistButton != null)
-                activeArtistButton.setBackgroundColor(getColor(R.color.defaultBtnColor));
-
-            btn.setBackgroundColor(getColor(R.color.activeBtnColor));
-            activeArtistButton = btn;
-
-            filtered.clear();
-            if (artist.equals("Tous")) filtered.addAll(all);
-            else for (Music m : all)
-                if (m.artist.equals(artist)) filtered.add(m);
-
-            currentPos = -1;
-            adapter.notifyDataSetChanged();
+    private void buildArtistButtons() {
+        addRoundedButton(artistContainer, "Tous", true, t -> {
+            activeArtist = t;
+            applyFilters();
         });
-        artistContainer.addView(btn);
 
-        if (artist.equals("Tous")) {
-            activeArtistButton = btn;
-            btn.setBackgroundColor(getColor(R.color.activeBtnColor));
-        }
+        Set<String> set = new HashSet<>();
+        for (Music m : all) set.add(m.artist);
+
+        for (String a : set)
+            addRoundedButton(artistContainer, a, false, t -> {
+                activeArtist = t;
+                applyFilters();
+            });
     }
 
-    // ===== CREATE ROUNDED BUTTON =====
-    private Button createRoundedButton(String text) {
+    private void applyFilters() {
+        List<Music> filtered = new ArrayList<>();
+
+        for (Music m : all) {
+            boolean okCat = activeCategory.equals("Tous") || m.category.equals(activeCategory);
+            boolean okArt = activeArtist.equals("Tous") || m.artist.equals(activeArtist);
+            if (okCat && okArt) filtered.add(m);
+        }
+
+        // reset player
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        currentPos = -1;
+        miniPlayer.setVisibility(View.GONE);
+
+        adapter.updateList(filtered);
+    }
+
+    // ================= ROUNDED BUTTON =================
+    private void addRoundedButton(LinearLayout container, String text, boolean active, OnTextClick cb) {
         Button btn = new Button(this);
         btn.setText(text);
         btn.setAllCaps(false);
-        btn.setPadding(32, 16, 32, 16);
+        btn.setPadding(40, 16, 40, 16);
 
-        // Bordure arrondie
-        GradientDrawable gd = new GradientDrawable();
-        gd.setColor(getColor(R.color.defaultBtnColor));
-        gd.setCornerRadius(50); // <-- arrondi
-        btn.setBackground(gd);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setCornerRadius(100f);
+        bg.setColor(getColor(active ? R.color.activeBtnColor : R.color.defaultBtnColor));
+        btn.setBackground(bg);
 
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-        params.setMargins(24, 0, 24, 0);
-        btn.setLayoutParams(params);
-        return btn;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        lp.setMargins(16, 0, 16, 0);
+        btn.setLayoutParams(lp);
+
+        btn.setOnClickListener(v -> {
+            for (int i = 0; i < container.getChildCount(); i++) {
+                Button b = (Button) container.getChildAt(i);
+                ((GradientDrawable) b.getBackground())
+                        .setColor(getColor(R.color.defaultBtnColor));
+            }
+            bg.setColor(getColor(R.color.activeBtnColor));
+            cb.onClick(text);
+        });
+
+        container.addView(btn);
     }
 
-    // ================== DATA ==================
+    interface OnTextClick {
+        void onClick(String text);
+    }
+
+    // ================= DATA =================
     private void loadJson() {
         try {
             InputStream is = getAssets().open("musics.json");
@@ -237,22 +251,23 @@ public class MyMusique extends AppCompatActivity {
                 JSONObject o = arr.getJSONObject(i);
                 int resId = getResources().getIdentifier(
                         o.getString("file"), "raw", getPackageName());
-                if (resId == 0) continue;
 
-                all.add(new Music(
-                        o.getString("title"),
-                        o.getString("artist"),
-                        o.getString("category"),
-                        resId
-                ));
+                if (resId != 0)
+                    all.add(new Music(
+                            o.getString("title"),
+                            o.getString("artist"),
+                            o.getString("category"),
+                            resId
+                    ));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // ================== PLAYER ==================
+    // ================= PLAYER =================
     public void playMusicFromAdapter(Music music, int pos) {
+        int oldPos = currentPos;
         currentPos = pos;
 
         if (mediaPlayer != null) mediaPlayer.release();
@@ -261,20 +276,24 @@ public class MyMusique extends AppCompatActivity {
         mediaPlayer.start();
 
         showMiniPlayer(music);
-        adapter.notifyDataSetChanged();
+
+        if (oldPos != -1) adapter.notifyItemChanged(oldPos);
+        adapter.notifyItemChanged(currentPos);
 
         mediaPlayer.setOnCompletionListener(mp -> {
-            currentPos = -1;
-            adapter.notifyDataSetChanged();
-            mp.release();
-            mediaPlayer = null;
+            if (isRepeatOne) {
+                playMusicFromAdapter(displayed.get(currentPos), currentPos);
+            } else {
+                playNext();
+            }
         });
     }
 
     private void showMiniPlayer(Music music) {
-        miniPlayer.setVisibility(LinearLayout.VISIBLE);
+        miniPlayer.setVisibility(View.VISIBLE);
         miniTitle.setText(music.title);
         miniArtist.setText(music.artist);
+        miniPlay.setText("⏸");
 
         miniPlay.setOnClickListener(v -> {
             if (mediaPlayer.isPlaying()) {
@@ -284,7 +303,6 @@ public class MyMusique extends AppCompatActivity {
                 mediaPlayer.start();
                 miniPlay.setText("⏸");
             }
-            adapter.notifyDataSetChanged();
         });
 
         miniSeekBar.setMax(mediaPlayer.getDuration());
@@ -313,23 +331,34 @@ public class MyMusique extends AppCompatActivity {
     }
 
     private void playNext() {
-        if (filtered.isEmpty() || currentPos == -1) return;
-        int next = (currentPos + 1) % filtered.size();
-        playMusicFromAdapter(filtered.get(next), next);
+        if (adapter.getItemCount() == 0 || currentPos == -1) return;
+
+        int next;
+        if (isShuffle) {
+            do {
+                next = random.nextInt(adapter.getItemCount());
+            } while (next == currentPos && adapter.getItemCount() > 1);
+        } else {
+            next = (currentPos + 1) % adapter.getItemCount();
+        }
+
+        playMusicFromAdapter(adapter.getItem(next), next);
     }
 
     private void playPrevious() {
-        if (filtered.isEmpty() || currentPos == -1) return;
-        int prev = currentPos - 1;
-        if (prev < 0) prev = filtered.size() - 1;
-        playMusicFromAdapter(filtered.get(prev), prev);
+        if (adapter.getItemCount() == 0 || currentPos == -1) return;
+
+        int prev = currentPos - 1 < 0
+                ? adapter.getItemCount() - 1
+                : currentPos - 1;
+
+        playMusicFromAdapter(adapter.getItem(prev), prev);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
             currentPos = -1;
