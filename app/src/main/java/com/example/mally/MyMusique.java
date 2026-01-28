@@ -50,7 +50,7 @@ public class MyMusique extends AppCompatActivity {
 
     // ===== UI =====
     LinearLayout miniPlayer, categoryContainer, artistContainer;
-    TextView miniTitle, miniArtist;
+    TextView miniTitle, miniArtist, txtTime;
     Button miniPrev, miniPlay, miniNext;
     SeekBar miniSeekBar;
 
@@ -68,7 +68,10 @@ public class MyMusique extends AppCompatActivity {
     boolean isRepeatOne = false;
     Random random = new Random();
 
-    private static final int LOADER_DURATION = 1500;
+    // 🔁 Shuffle intelligent
+    List<Integer> shuffleHistory = new ArrayList<>();
+
+    private static final int LOADER_DURATION = 1200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class MyMusique extends AppCompatActivity {
         miniPlay = findViewById(R.id.miniPlay);
         miniNext = findViewById(R.id.miniNext);
         miniSeekBar = findViewById(R.id.miniSeek);
+        txtTime = findViewById(R.id.txtTime);
 
         categoryContainer = findViewById(R.id.categoryContainer);
         artistContainer = findViewById(R.id.artistContainer);
@@ -115,7 +119,7 @@ public class MyMusique extends AppCompatActivity {
             return true;
         });
 
-        // ===== LOAD DATA =====
+        // ===== LOAD =====
         showLoader();
         loadJson();
 
@@ -140,12 +144,9 @@ public class MyMusique extends AppCompatActivity {
 
         handler.postDelayed(() -> {
             loaderContainer.setVisibility(View.GONE);
-
             findViewById(R.id.recyclerMusic).setVisibility(View.VISIBLE);
             categoryContainer.setVisibility(View.VISIBLE);
             artistContainer.setVisibility(View.VISIBLE);
-
-            if (currentPos != -1) miniPlayer.setVisibility(View.VISIBLE);
         }, LOADER_DURATION);
     }
 
@@ -191,11 +192,13 @@ public class MyMusique extends AppCompatActivity {
             if (okCat && okArt) filtered.add(m);
         }
 
-        // reset player
+        shuffleHistory.clear();
+
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+
         currentPos = -1;
         miniPlayer.setVisibility(View.GONE);
 
@@ -267,6 +270,10 @@ public class MyMusique extends AppCompatActivity {
 
     // ================= PLAYER =================
     public void playMusicFromAdapter(Music music, int pos) {
+
+        shuffleHistory.clear();
+        shuffleHistory.add(pos);
+
         int oldPos = currentPos;
         currentPos = pos;
 
@@ -280,13 +287,7 @@ public class MyMusique extends AppCompatActivity {
         if (oldPos != -1) adapter.notifyItemChanged(oldPos);
         adapter.notifyItemChanged(currentPos);
 
-        mediaPlayer.setOnCompletionListener(mp -> {
-            if (isRepeatOne) {
-                playMusicFromAdapter(displayed.get(currentPos), currentPos);
-            } else {
-                playNext();
-            }
-        });
+        mediaPlayer.setOnCompletionListener(mp -> playNext());
     }
 
     private void showMiniPlayer(Music music) {
@@ -323,35 +324,53 @@ public class MyMusique extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override public void run() {
                 if (mediaPlayer != null) {
-                    miniSeekBar.setProgress(mediaPlayer.getCurrentPosition());
-                    handler.postDelayed(this, 300);
+                    int cur = mediaPlayer.getCurrentPosition();
+                    int total = mediaPlayer.getDuration();
+                    miniSeekBar.setProgress(cur);
+                    txtTime.setText(formatTime(cur) + " / " + formatTime(total));
+                    handler.postDelayed(this, 500);
                 }
             }
-        }, 300);
+        }, 500);
     }
 
+    private String formatTime(int ms) {
+        int sec = ms / 1000;
+        return String.format("%02d:%02d", sec / 60, sec % 60);
+    }
+
+    // 🔁 SHUFFLE INTELLIGENT
     private void playNext() {
-        if (adapter.getItemCount() == 0 || currentPos == -1) return;
+        int size = adapter.getItemCount();
+        if (size == 0 || currentPos == -1) return;
 
         int next;
+
         if (isShuffle) {
-            do {
-                next = random.nextInt(adapter.getItemCount());
-            } while (next == currentPos && adapter.getItemCount() > 1);
+            List<Integer> available = new ArrayList<>();
+            for (int i = 0; i < size; i++)
+                if (!shuffleHistory.contains(i)) available.add(i);
+
+            if (available.isEmpty()) {
+                shuffleHistory.clear();
+                playNext();
+                return;
+            }
+
+            next = available.get(random.nextInt(available.size()));
+            shuffleHistory.add(next);
         } else {
-            next = (currentPos + 1) % adapter.getItemCount();
+            next = (currentPos + 1) % size;
         }
 
         playMusicFromAdapter(adapter.getItem(next), next);
     }
 
     private void playPrevious() {
-        if (adapter.getItemCount() == 0 || currentPos == -1) return;
+        int size = adapter.getItemCount();
+        if (size == 0 || currentPos == -1) return;
 
-        int prev = currentPos - 1 < 0
-                ? adapter.getItemCount() - 1
-                : currentPos - 1;
-
+        int prev = currentPos - 1 < 0 ? size - 1 : currentPos - 1;
         playMusicFromAdapter(adapter.getItem(prev), prev);
     }
 

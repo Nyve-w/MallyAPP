@@ -76,7 +76,7 @@
         <LinearLayout
             android:id="@+id/miniPlayer"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="165dp"
             android:layout_gravity="bottom"
             android:orientation="vertical"
             android:background="@drawable/mini_player_bg"
@@ -121,6 +121,7 @@
                         android:singleLine="true"
                         android:ellipsize="end"/>
                 </LinearLayout>
+
 
                 <!-- CONTROLES LECTURE -->
                 <Button
@@ -204,6 +205,16 @@
                 android:layout_height="wrap_content"
                 android:progressTint="@color/purple_500"
                 android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/txtTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00 / 00:00"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="4dp"/>
+
         </LinearLayout>
 
         <!-- SPLASH / LOADER -->
