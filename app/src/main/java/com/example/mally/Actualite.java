@@ -1,20 +1,20 @@
 package com.example.mally;
-
 public class Actualite {
-
-    private String title;
+    private String titre;
     private String description;
+    private String urlToImage;
     private String publishedAt;
 
     public String getTitre() {
-        return title;
+        return titre;
     }
-
     public String getDescription() {
         return description;
     }
-
-    public String getDate() {
+    public String getUrlToImage() {
+        return urlToImage;
+    }
+    public String getPublishedAt() {
         return publishedAt;
     }
 }
